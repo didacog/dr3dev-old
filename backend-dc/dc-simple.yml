@@ -1,0 +1,35 @@
+version: '3.7'
+
+services:
+
+    mariadb:
+        # The DRLMv3 database config options for development and testing purposes can be
+        # specified settings in something like mydrlm.cnf under ${PWD}/db/conf folder.
+
+        image: mariadb:10.3
+        environment:
+            MYSQL_ROOT_PASSWORD: drlm3db
+            MYSQL_DATABASE: drlm3
+            MYSQL_USER: drlm3
+            MYSQL_PASSWORD: drlm3db
+        restart: on-failure
+        volumes:
+            - ${PWD}/db/data:/var/lib/mysql
+            - ${PWD}/db/conf:/etc/mysql/conf.d
+        ports:
+            - 3306:3306
+    
+    minio:
+        # The minio config.json setting DRLMv3 options for dev/test/prod purposes
+        # should be placed under ${PDW}/minio/data/.minio/config.json
+
+        image: minio/minio
+        environment:
+            MINIO_ACCESS_KEY: drlm3minio
+            MINIO_SECRET_KEY: drlm3minio
+        restart: on-failure
+        volumes:
+            - ${PWD}/minio/data:/.minio/data
+        ports:
+            - 9000:9000
+        command: server /.minio/data

@@ -1,0 +1,63 @@
+version: '3.7'
+
+services:
+
+    mariadb:
+        # The DRLMv3 database config options for development and testing purposes can be
+        # specified settings in something like mydrlm.cnf under ${PWD}/db/conf folder.
+        # Tu make use of TLS put the certificates in ${PWD}/db/tls folder and edit ${PWD}/db/conf/mydrlm.cnf
+        # with:
+        #  [mysqld]
+        #  ssl
+        #  ssl-ca = /tls/ca-cert.pem
+        #  ssl-key = /tls/dbs-key.pem
+        #  ssl-cert = /tls/dbs-cert.pem
+        #
+        # A good strong defaults sould be with REQUIRE ISSUER.
+        #
+        # On the client side you need to care about client certificates on mysql client utility for debugging or in 
+        # DRLM config itself to be able to connect to the Database.
+        # For example in mysql client config file:
+        #  [mysql]
+        #  ssl-ca = /path/to/ca-cert.pem
+        #  ssl-key = /path/to/dbcli-key.pem
+        #  ssl-cert = /path/to/dbcli-cert.pem
+        #
+        # TODO:
+        # The point will be to use some PKI infra to autogenerate all the TLS certificates, I'm looking
+        # at cfssl to get all required certs automatically.
+
+        image: mariadb:10.3
+        environment:
+            MYSQL_ROOT_PASSWORD: drlm3db
+            MYSQL_DATABASE: drlm3
+            MYSQL_USER: drlm3
+            MYSQL_PASSWORD: drlm3db
+        restart: on-failure
+        volumes:
+            - ${PWD}/db/data:/var/lib/mysql
+            - ${PWD}/db/conf:/etc/mysql/conf.d
+            - ${PWD}/db/tls:/tls
+        ports:
+            - 3306:3306
+    
+    minio:
+        # The minio config.json setting DRLMv3 options for dev/test/prod purposes
+        # should be placed under ${PDW}/minio/data/.minio/config.json
+        # 
+        # The TLS certificates should be placed in ${PWD}/minio/tls
+        #
+        # TODO: 
+        # Certificate autogeneration (cfssl??)
+
+        image: minio/minio
+        environment:
+            MINIO_ACCESS_KEY: drlm3minio
+            MINIO_SECRET_KEY: drlm3minio
+        restart: on-failure
+        volumes:
+            - ${PWD}/minio/data:/.minio/data
+            - ${PWD}/minio/tls:/.minio/certs
+        ports:
+            - 9443:9443
+        command: server --address ":9443" /.minio/data
