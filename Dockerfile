@@ -1,24 +1,29 @@
-FROM golang:1.11.5
+FROM archlinux/base:latest
 
 MAINTAINER Didac Oliveira "didac@drlm.org"
 
-ENV	DEBIAN_FRONTEND=noninteractive \ 
-	DEBCONF_NONINTERACTIVE_SEEN=true 
-
-RUN apt-get update -qq && \
-	echo 'Installing OS dependencies' && \
-	apt-get install -qq -y --fix-missing \
-	apt-utils sudo locate locales tmux vim \ 
-	&& \ 
-	echo 'Cleaning up' && \
-    apt-get clean -qq -y && \
-    apt-get autoclean -qq -y && \
-    apt-get autoremove -qq -y &&  \
-    #rm -rf /var/lib/apt/lists/* && \
+RUN pacman -Syu --noconfirm && \
+	pacman --noconfirm -S sudo git curl wget gnupg bash-completion \
+	autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make patch pkgconf sed texinfo util-linux which \
+	neovim python-neovim tmux && \
+	#git clone https://aur.archlinux.org/yay.git && cd yay && makepkg -si && cd  .. && rm -rf yay && \
     rm -rf /tmp/* && \
-    updatedb && \
 	locale-gen en_US.UTF-8 && \
 	localedef -i en_US -f UTF-8 en_US.UTF-8
+
+# Install Golang
+
+ENV GOLANG_VERSION 1.11.5
+ENV ARCH amd64 
+RUN set -eux; \
+	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"; \
+	#wget -O go.tgz "$url"; \
+	curl -fLo go.tgz "$url"; \
+	#echo "${goRelSha256} *go.tgz" | sha256sum -c -; \
+	tar -C /usr/local -xzf go.tgz; \
+	rm go.tgz; \
+	export PATH="/usr/local/go/bin:$PATH"; \
+	go version
 
 ARG MYUSERNAME=developer
 ARG MYUID=1000
@@ -27,16 +32,13 @@ ENV MYUSERNAME=${MYUSERNAME}\
 	MYUID=${MYUID} \
 	MYGID=${MYGID}
 
-RUN echo 'Creating user: ${MYUSERNAME} wit UID $UID' && \
-    mkdir -p /home/${MYUSERNAME} && \
-    echo "${MYUSERNAME}:x:${MYUID}:${MYGID}:Developer,,,:/home/${MYUSERNAME}:/bin/bash" >> /etc/passwd && \
-    echo "${MYUSERNAME}:x:${MYGID}:" >> /etc/group && \
-    sudo echo "${MYUSERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${MYUSERNAME} && \
-    sudo chmod 0440 /etc/sudoers.d/${MYUSERNAME} && \
-    sudo chown ${MYUSERNAME}:${MYUSERNAME} -R /home/${MYUSERNAME} 
-	#&& \
-    #sudo chown root:root /usr/bin/sudo && \
-	#chmod 4755 /usr/bin/sudo
+RUN groupadd --gid ${MYGID} ${MYUSERNAME} && \
+	useradd --gid ${MYGID} --uid ${MYUID} --home-dir /home/${MYUSERNAME} -m --shell /bin/bash ${MYUSERNAME} && \
+	echo "${MYUSERNAME} ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/${MYUSERNAME} && \
+    chmod 0440 /etc/sudoers.d/${MYUSERNAME}
+
+COPY files/init.vim /home/${MYUSERNAME}/.config/nvim/init.vim
+COPY files/tmux.conf /home/${MYUSERNAME}/.tmux.conf
 
 USER ${MYUSERNAME}
 
@@ -47,6 +49,8 @@ ENV HOME=/home/${MYUSERNAME}
 ENV GOPATH=/home/${MYUSERNAME}/go
 ENV PATH=$PATH:/home/${MYUSERNAME}/go/bin:/usr/local/go/bin
 ENV TERM=xterm-256color
+
+RUN mkdir -p "$GOPATH/src" "$GOPATH/bin" && chown -R ${MYUSERNAME}:${MYUSERNAME} "$GOPATH"
 
 WORKDIR /home/${MYUSERNAME}
 
