@@ -13,19 +13,19 @@ set background=dark
 
 " Auto plugin update and 1st time install plugin manager Vim Plug
 
-if has('nvim')
-  if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+"if has('nvim')
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
 	\  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
-else
-  if empty(glob('~/.vim/autoload/plug.vim'))
-    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-	\  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-  endif
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
+"else
+"  if empty(glob('~/.vim/autoload/plug.vim'))
+"    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+"	\  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+"    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+"  endif
+"endif
 
 "autocmd vimenter * NERDTree
 
@@ -195,7 +195,9 @@ let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 " colorscheme
 let g:gruvbox_italic=1
-colorscheme gruvbox
+if !(empty(glob('~/.vim/plugged/gruvbox')))
+	colorscheme gruvbox
+endif
 " term
 "set term=xterm-256color
 set t_Co=256

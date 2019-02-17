@@ -1,2 +1,0 @@
- docker build --build-arg MYUSERNAME=$(id -un) --build-arg MYUID=$(id -u) --build-arg MYGID=$(id -g) -t devenv . 
- docker run -ti -v ${HOME}:${HOME} -e DISPLAY=${DISPLAY} -w $HOME devenv 

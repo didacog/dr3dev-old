@@ -14,10 +14,11 @@ services:
             MYSQL_PASSWORD: drlm3db
         restart: on-failure
         volumes:
-            - ${PWD}/db/data:/var/lib/mysql
-            - ${PWD}/db/conf:/etc/mysql/conf.d
+            - ${PWD}/files/db/data:/var/lib/mysql
+            - ${PWD}/files/db/conf:/etc/mysql/conf.d
         ports:
             - 3306:3306
+        network_mode: "bridge"
     
     minio:
         # The minio config.json setting DRLMv3 options for dev/test/prod purposes
@@ -29,7 +30,10 @@ services:
             MINIO_SECRET_KEY: drlm3minio
         restart: on-failure
         volumes:
-            - ${PWD}/minio/data:/.minio/data
+            - ${PWD}/files/minio/data:/.minio/data
         ports:
             - 9000:9000
+        network_mode: "bridge"
         command: server /.minio/data
+
+
