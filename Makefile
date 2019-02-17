@@ -6,7 +6,7 @@
 .PHONY: build-godev
 build-godev: ## Builds Development Environment 
 	@echo "Building godev environment container ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t drlm/godev:1.11.5 ./docker/godev/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/
 
 .PHONY: start-godev
 start-godev: ## Start Development Environment 
@@ -18,15 +18,43 @@ stop-godev: ## Start Development Environment
 	@echo "Stopping Development Environemnt ..."
 	docker-compose -f docker/godev/docker-compose.yml stop godev
 
-.PHONY: start-bakend
-start-bakend: ## Start Minio and MariaDB services
+.PHONY: start-backend
+start-backend: ## Start Minio and MariaDB services
 	@echo "Starting Minio and MariaDB ..."
 	docker-compose -f docker/backend/dc-simple.yml up -d
 
-.PHONY: stop-bakend
-stop-bakend: ## Start Minio and MariaDB services
+.PHONY: stop-backend
+stop-backend: ## Start Minio and MariaDB services
 	@echo "Stopping Minio and MariaDB ..."
 	docker-compose -f docker/backend/dc-simple.yml down
+
+.PHONY: clean-godev
+clean-godev: ## Clean Golang and Vim plugin files
+	@echo "Cleaning up Go dev env (golang and vim plugins) ..."
+	rm -rvf files/golang/*
+	rm -rvf files/vimplug/*
+
+.PHONY: clean-backend
+clean-backend: ## Clean Minio and MariaDb files
+	@echo "Cleaning up backend files (minio data and mariadb datafiles) ..."
+	sudo rm -rvf files/db/data/*
+	sudo rm -rvf files/minio/data/*
+
+.PHONY: clean-img
+clean-img: ## Clean all related docker images
+	@echo "Cleaning up all docker images (godev, minio & mariadb) ..."
+	docker image rm godev:1.11.5 -f
+	docker image rm minio/minio:latest -f
+	docker image rm mariadb:10.3 -f
+	docker image prune -a -f 
+
+.PHONY: clean-all
+clean-all: clean-godev clean-backend clean-img ## Clean all data - Wipe all data
+
+.PHONY: status
+status: ## Show running containers and it's state
+	@docker ps
+
 #.PHONY: dotfiles
 #dotfiles: ## Installs the dotfiles.
 #	# add aliases for dotfiles
