@@ -75,6 +75,8 @@ stop-godev-vscode              Stop [vscode] Development Environment
 * 0.1.0
 	* Added release history in README.
 	* Added <pre>make help & docker image ls</pre> in README for documentation.
+	* Solved some vim plugins installation errors. Now image size is bigger //FIXIT if possible.
+	* Solved last exec missing in nvim entrypoint.sh due to accidental removal :_(
 	* Work in progres ...
 * 0.0.9
 	* Added new goenv-vscode image.
