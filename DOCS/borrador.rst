@@ -14,19 +14,19 @@ dr3dev2 tmux new -s DRLMv3_Dev_Env -c nvim
 
 # TODO
 
-- posar dr3env com a compose ??
-- definir xarxa per tots accessible
+done - posar dr3env com a compose ??
+done - definir xarxa per tots accessible
+done - es pot reduir mes la imatge? 680MB godev 1.4G godev-vscode
+done - millorar entripoint dr3dev (varis casos tmux, nvim, vscode, ...)
+done - millorar organitzacio repo
+done - fer gitignore
+done - crear Makefile ber builds i runs ... ha de ser el punt unic de crida
+done - fer make clean de dades: gopath, mariadb, minio, vimplug, ...
+done - vscode?
 - afegir ssh al dr3env?
-- millorar organitzacio repo
-- fer gitignore
-- crear Makefile ber builds i runs ... ha de ser el punt unic de crida
 - fer docu
 - config TLS
 - preparar cfssl per generar certificats
-- fer make clean de dades: gopath, mariadb, minio, vimplug, ...
-- vscode?
 - pensar mes utilitats a afegir (tenir en compte tamany)
-- es pot reduir mes la imatge?
-- millorar entripoint dr3dev (varis casos tmux, nvim, vscode, ...)
 - etc.
 
