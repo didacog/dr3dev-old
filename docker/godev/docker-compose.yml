@@ -4,7 +4,7 @@ services:
 
     godev:
         # The DRLMv3 development environment
-        image: drlm/godev:1.11.5
+        image: godev:1.11.5
 #        environment:
         volumes:
             - ${PWD}/files/golang/goroot:/usr/local/go

@@ -8,9 +8,20 @@ build-godev: ## Builds Development Environment
 	@echo "Building godev environment container ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/
 
+.PHONY: build-backend
+build-backend: ## Builds Backend images with correct UID/GIDs for Development Environment 
+	@echo "Building backend environment containers ..."
+	@echo "Building MariaDB container image ..."
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t mydb:10.3 ./docker/backend/db/
+	@echo "Building Minio container image ..."
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t myminio:latest ./docker/backend/minio/
+
 .PHONY: start-godev
 start-godev: ## Start Development Environment 
 	@echo "Starting Development Environemnt ..."
+	mkdir -vp files/golang/gopath
+	mkdir -vp files/golang/goroot
+	mkdir -vp files/vimplug
 	docker-compose -f docker/godev/docker-compose.yml run godev
 
 .PHONY: stop-godev
@@ -21,6 +32,8 @@ stop-godev: ## Start Development Environment
 .PHONY: start-backend
 start-backend: ## Start Minio and MariaDB services
 	@echo "Starting Minio and MariaDB ..."
+	mkdir -vp files/db/data
+	mkdir -vp files/minio/data
 	docker-compose -f docker/backend/dc-simple.yml up -d
 
 .PHONY: stop-backend
@@ -31,14 +44,14 @@ stop-backend: ## Start Minio and MariaDB services
 .PHONY: clean-godev
 clean-godev: ## Clean Golang and Vim plugin files
 	@echo "Cleaning up Go dev env (golang and vim plugins) ..."
-	rm -rvf files/golang/*
-	rm -rvf files/vimplug/*
+	rm -rvf files/golang
+	rm -rvf files/vimplug
 
 .PHONY: clean-backend
 clean-backend: ## Clean Minio and MariaDb files
 	@echo "Cleaning up backend files (minio data and mariadb datafiles) ..."
-	sudo rm -rvf files/db/data/*
-	sudo rm -rvf files/minio/data/*
+	sudo rm -rvf files/db/data
+	sudo rm -rvf files/minio/data
 
 .PHONY: clean-img
 clean-img: ## Clean all related docker images
