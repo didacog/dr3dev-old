@@ -12,7 +12,7 @@ services:
             - ${PWD}/files/golang/goroot:/usr/local/go
             - ${PWD}/files/golang/gopath:${HOME}/go
             - ${PWD}/files/dots:${HOME}/dots
-            - ${PWD}/files/vscode:${HOME}/.conf/
+            - ${PWD}/files/vscode:${HOME}/.vscode-oss/
             - /tmp/.X11-unix:/tmp/.X11-unix
 #        ports:
 #        command: code ${HOME}/go

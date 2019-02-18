@@ -27,6 +27,7 @@ fi
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash
 
 # Install VSCode extensions
+go get github.com/sourcegraph/go-langserver
 code --install-extension ms-vscode.Go
 code --install-extension lextudio.restructuredtext
 code --install-extension tomphilbin.gruvbox-themes

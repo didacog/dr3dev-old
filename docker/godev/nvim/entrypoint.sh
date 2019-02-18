@@ -29,6 +29,7 @@ fi
 
 # Install Vim Plugins + vim-go binaries
 #curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+go get github.com/sourcegraph/go-langserver
 nvim --headless +qall 
 nvim --headless +PlugInstall +qall 
 nvim --headless +PlugInstall +UpdateRemotePlugins +qall 
