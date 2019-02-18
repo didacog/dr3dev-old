@@ -2,3 +2,4 @@ files/golang/*
 files/db/data/*
 files/minio/data/*
 files/vimplug/*
+files/vscode/*

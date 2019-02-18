@@ -4,9 +4,14 @@
 #arg := $(word 3, $(MAKECMDGOALS) )
 
 .PHONY: build-godev
-build-godev: ## Builds Development Environment 
-	@echo "Building godev Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/
+build-godev: ## Builds [neovim] Development Environment 
+	@echo "Building godev [neovim] Environment container image ..."
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/nvim/
+
+.PHONY: build-godev-vscode
+build-godev-vscode: ## Builds [vscode] Development Environment 
+	@echo "Building godev [vscode] Environment container image ..."
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.11.5 ./docker/godev/vscode/
 
 .PHONY: build-backend
 build-backend: ## Builds Backend images with correct UID/GIDs for Development Environment 
@@ -16,20 +21,33 @@ build-backend: ## Builds Backend images with correct UID/GIDs for Development En
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t myminio:latest ./docker/backend/minio/
 
 .PHONY: build-all
-build-all: build-godev build-backend ## Build all docker images
+build-all: build-godev build-backend ## Build all docker images [vscode: NO]
 
 .PHONY: start-godev
-start-godev: ## Start Development Environment 
-	@echo "Starting Development Environemnt ..."
+start-godev: ## Start [neovim] Development Environment 
+	@echo "Starting [neovim] Development Environemnt ..."
 	mkdir -vp files/golang/gopath
 	mkdir -vp files/golang/goroot
 	mkdir -vp files/vimplug
-	docker-compose -f docker/godev/docker-compose.yml run godev
+	docker-compose -f docker/godev/nvim/docker-compose.yml run godev
+
+.PHONY: start-godev-vscode
+start-godev-vscode: ## Start [vscode] Development Environment 
+	@echo "Starting [vscode] Development Environemnt ..."
+	mkdir -vp files/golang/gopath
+	mkdir -vp files/golang/goroot
+	mkdir -vp files/vscode
+	docker-compose -f docker/godev/vscode/docker-compose.yml run godev
 
 .PHONY: stop-godev
-stop-godev: ## Start Development Environment 
-	@echo "Stopping Development Environemnt ..."
-	docker-compose -f docker/godev/docker-compose.yml stop godev
+stop-godev: ## Stop [neovim] Development Environment 
+	@echo "Stopping [neovim] Development Environemnt ..."
+	docker-compose -f docker/godev/nvim/docker-compose.yml stop godev
+
+.PHONY: stop-godev-vscode
+stop-godev-vscode: ## Stop [vscode] Development Environment 
+	@echo "Stopping [vscode] Development Environemnt ..."
+	docker-compose -f docker/godev/vscode/docker-compose.yml stop godev
 
 .PHONY: start-backend
 start-backend: ## Start Minio and MariaDB services
@@ -44,10 +62,11 @@ stop-backend: ## Start Minio and MariaDB services
 	docker-compose -f docker/backend/dc-simple.yml down
 
 .PHONY: clean-godev
-clean-godev: ## Clean Golang and Vim plugin files
+clean-godev: ## Clean Golang, Vim plugin and VScode files
 	@echo "Cleaning up Go dev env (golang and vim plugins) ..."
 	rm -rvf files/golang
 	rm -rvf files/vimplug
+	rm -rvf files/vscode
 
 .PHONY: clean-backend
 clean-backend: ## Clean Minio and MariaDb files
@@ -59,6 +78,7 @@ clean-backend: ## Clean Minio and MariaDb files
 clean-img: ## Clean all related docker images
 	@echo "Cleaning up all docker images (godev, minio & mariadb) ..."
 	docker image rm godev:1.11.5 -f
+	docker image rm godev-vscode:1.11.5 -f
 	docker image rm myminio:latest -f
 	docker image rm mydb:10.3 -f
 	docker image prune -a -f 

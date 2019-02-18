@@ -3,16 +3,17 @@ version: '3.7'
 services:
 
     godev:
-        # The DRLMv3 development environment
+        # The DRLMv3 development environment with:
+        # tmux - nvim - git - gitflow 
         image: godev:1.11.5
 #        environment:
         volumes:
             - ${PWD}/files/golang/goroot:/usr/local/go
-            - ${PWD}/files/golang/gopath:$HOME/go
-            - ${PWD}/files/dots:$HOME/dots
+            - ${PWD}/files/golang/gopath:${HOME}/go
+            - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vimplug:${HOME}/.vim/plugged 
 #        ports:
-        command: bash -c "tmux new -s DRLMv3_DevEnv -c nvim" 
+        command: bash -c "tmux new -s DRLMv3_DevEnv" 
 
 networks:
   default:

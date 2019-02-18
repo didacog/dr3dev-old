@@ -21,18 +21,18 @@ else
 	echo "Skipping ... Go already installed!! ;)" 
 fi
 
-[ -f "$HOME"/dots/init.vim ] && mkdir -p ${HOME}/.config/nvim; ln -s ${HOME}/dots/init.vim ${HOME}/.config/nvim/init.vim
 [ -f "$HOME"/dots/tmux.conf ] && ln -s ${HOME}/dots/tmux.conf ${HOME}/.tmux.conf
 [ -f "$HOME"/dots/bash/bashrc ] && ln -sf ${HOME}/dots/bash/bashrc ${HOME}/.bashrc
 [ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash
 
-# Install Vim Plugins + vim-go binaries
-#curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-nvim --headless +qall 
-nvim --headless +PlugInstall +qall 
-nvim --headless +PlugInstall +UpdateRemotePlugins +qall 
-nvim --headless +GoInstallBinaries +qall
+# Install VSCode extensions
+code --install-extension ms-vscode.Go
+code --install-extension lextudio.restructuredtext
+code --install-extension tomphilbin.gruvbox-themes
+code --install-extension vector-of-bool.gitflow
+code --install-extension mads-hartmann.bash-ide-vscode
+
 
 exec "$@"
 
