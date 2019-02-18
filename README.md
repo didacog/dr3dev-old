@@ -16,6 +16,7 @@ Could be useful also for anyone interested in start developing in Golang.
 
 - docker
 - docker-compose
+- make
 
 ## How to use this tool?
 
@@ -27,6 +28,16 @@ $ git clone https://github.com/didacog/dr3dev && cd dr3dev
 ### 2. Build the environment.
 <pre>
 $ make build-all
+</pre>
+
+This is a list of all available images possible:
+<pre>
+$ docker image ls
+REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
+godev-vscode        1.11.5              92f50864dc00        9 seconds ago        1.31GB
+godev               1.11.5              e1202457d23a        About a minute ago   680MB
+myminio             latest              d3ed40bcfee8        21 hours ago         41.3MB
+mydb                10.3                5b376274dd85        21 hours ago         368MB
 </pre>
 
 ### 2. Start the environment.
@@ -57,3 +68,52 @@ stop-backend                   Start Minio and MariaDB services
 stop-godev                     Stop [neovim] Development Environment 
 stop-godev-vscode              Stop [vscode] Development Environment 
 </pre>
+
+
+## Release History
+
+* 0.1.0
+	* Added release history in README.
+	* Added <pre>make help & docker image ls</pre> in README for documentation.
+	* Work in progres ...
+* 0.0.9
+	* Added new goenv-vscode image.
+	* Quick start in README.
+	* asked for testing to @proura @krbu @NefixEstrada.
+* 0.0.8
+	* Improved build times with BUILDKIT and Multi-stage builds.
+	* more reorgs. and little changes.
+* 0.0.7
+	* Dockerfiles for MariaDB & Minio services to fix user permisions (running with your UID/GID inside container).
+	* Compose file for godev image (improves documentation).
+	* Same bridge network for all containers in the environment.
+	* more reorganizations and changes.
+* 0.0.6
+	* Added MariaDB configurations in files/db/conf .
+	* Solved Vim plugins install errors (entrypoint.sh).
+	* reorganization of structure docker/[backend|godev] files/[dots|vimplug|golang/[goroot|gopath]|db|minio].
+	* New commands in Makefile.
+* 0.0.5
+	* added Makefile with build and start commands.
+	* godev dockerfile improvements.
+	* asked for testing to @krbu.
+* 0.0.4
+	* Reorganizations in structure.
+	* Added dotfiles support (pending custom dotfiles).
+	* godev Dockerfile reorg. Moved install Golang and Vim plugins to entrypoint.sh (persistence).
+	* Improved build times and image sizes.
+* 0.0.3
+	* Added GOROOT, GOPATH, Vim Plugins persistence in project 1st aproach (pending clean/wipe).
+* 0.0.2
+	* Tested various base image options (debian,alpine, etc.) see OLD dir.
+	* godev Dockerfile based in archlinux/base with golang, neovim, tmux, etc.
+* 0.0.1
+    * 1st docker-compose.yml file for backend services.
+
+## Author
+
+Didac Oliveira – [@didacog](https://twitter.com/didacog) – didac@brainupdaters.net
+
+Distributed under the GPLv3 license. See ``LICENSE`` for more information.
+
+[https://github.com/didacog](https://github.com/didacog/)
