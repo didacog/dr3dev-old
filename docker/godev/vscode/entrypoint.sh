@@ -26,14 +26,16 @@ fi
 [ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash
 
+touch ${HOME}/.bash_history
+
 # Install VSCode extensions
-go get github.com/sourcegraph/go-langserver
 code --install-extension ms-vscode.Go
 code --install-extension lextudio.restructuredtext
 code --install-extension tomphilbin.gruvbox-themes
 code --install-extension vector-of-bool.gitflow
 code --install-extension mads-hartmann.bash-ide-vscode
 
+go get github.com/sourcegraph/go-langserver
 
 exec "$@"
 

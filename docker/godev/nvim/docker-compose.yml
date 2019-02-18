@@ -13,7 +13,7 @@ services:
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vimplug:${HOME}/.vim/plugged 
 #        ports:
-        command: bash -c "tmux new -s DRLMv3_DevEnv" 
+        command: bash -c "tmux new -s DRLMv3_DevEnv 'nvim go'"
 
 networks:
   default:

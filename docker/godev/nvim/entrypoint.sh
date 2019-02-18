@@ -10,6 +10,8 @@ if [ ! -x /usr/local/go/bin/go ]; then
 	ARCH=amd64 
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
+	echo "Installing Golang ${GOLANG_VERSION} ..." 
+
 	#set -eux
 	curl -fLo go.tgz "$url" 
 	#echo "${goRelSha256} *go.tgz" | sha256sum -c - && \
@@ -27,10 +29,16 @@ fi
 [ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash
 
+touch ${HOME}/.bash_history
+
 # Install Vim Plugins + vim-go binaries
 #curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-go get github.com/sourcegraph/go-langserver
 nvim --headless +qall 
 nvim --headless +PlugInstall +qall 
 nvim --headless +PlugInstall +UpdateRemotePlugins +qall 
 nvim --headless +GoInstallBinaries +qall
+
+go get github.com/sourcegraph/go-langserver
+
+exec "$@"
+
