@@ -5,16 +5,18 @@
 
 .PHONY: build-godev
 build-godev: ## Builds Development Environment 
-	@echo "Building godev environment container ..."
+	@echo "Building godev Environment container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/
 
 .PHONY: build-backend
 build-backend: ## Builds Backend images with correct UID/GIDs for Development Environment 
-	@echo "Building backend environment containers ..."
 	@echo "Building MariaDB container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t mydb:10.3 ./docker/backend/db/
 	@echo "Building Minio container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t myminio:latest ./docker/backend/minio/
+
+.PHONY: build-all
+build-all: build-godev build-backend ## Build all docker images
 
 .PHONY: start-godev
 start-godev: ## Start Development Environment 
@@ -50,15 +52,15 @@ clean-godev: ## Clean Golang and Vim plugin files
 .PHONY: clean-backend
 clean-backend: ## Clean Minio and MariaDb files
 	@echo "Cleaning up backend files (minio data and mariadb datafiles) ..."
-	sudo rm -rvf files/db/data
-	sudo rm -rvf files/minio/data
+	rm -rvf files/db/data
+	rm -rvf files/minio/data
 
 .PHONY: clean-img
 clean-img: ## Clean all related docker images
 	@echo "Cleaning up all docker images (godev, minio & mariadb) ..."
 	docker image rm godev:1.11.5 -f
-	docker image rm minio/minio:latest -f
-	docker image rm mariadb:10.3 -f
+	docker image rm myminio:latest -f
+	docker image rm mydb:10.3 -f
 	docker image prune -a -f 
 
 .PHONY: clean-all
