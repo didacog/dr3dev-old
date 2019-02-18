@@ -23,10 +23,11 @@ done - fer gitignore
 done - crear Makefile ber builds i runs ... ha de ser el punt unic de crida
 done - fer make clean de dades: gopath, mariadb, minio, vimplug, ...
 done - vscode?
+done - fer docu
 - afegir ssh al dr3env?
-- fer docu
 - config TLS
 - preparar cfssl per generar certificats
 - pensar mes utilitats a afegir (tenir en compte tamany)
+- afegir possibilitat custom dots (.gitignore: files/dots/custom/*) + entrypoint.sh mods. 
 - etc.
 
