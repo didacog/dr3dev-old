@@ -5,17 +5,17 @@ services:
     godev:
         # The DRLMv3 development environment with:
         # tmux - nvim - vscode - git - gitflow 
-        image: godev:1.11.5
+        image: godev-vscode:1.11.5
         environment:
             - DISPLAY=${DISPLAY}
         volumes:
             - ${PWD}/files/golang/goroot:/usr/local/go
             - ${PWD}/files/golang/gopath:${HOME}/go
             - ${PWD}/files/dots:${HOME}/dots
-            - ${PWD}/files/vscode:${HOME}/.config/'Code - OSS'/
+            - ${PWD}/files/vscode:${HOME}/.conf/
             - /tmp/.X11-unix:/tmp/.X11-unix
 #        ports:
-        command: bash -c "code ${HOME}/go" 
+#        command: code ${HOME}/go
 
 networks:
   default:
