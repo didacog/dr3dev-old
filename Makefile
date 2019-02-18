@@ -64,7 +64,7 @@ stop-backend: ## Start Minio and MariaDB services
 .PHONY: clean-godev
 clean-godev: ## Clean Golang, Vim plugin and VScode files
 	@echo "Cleaning up Go dev env (golang and vim plugins) ..."
-	rm -rvf files/golang
+	sudo rm -rvf files/golang
 	rm -rvf files/vimplug
 	rm -rvf files/vscode
 
