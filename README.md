@@ -37,6 +37,7 @@ Could be useful also for anyone interested in start developing in Golang.
     $ sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
     $ sudo chmod +x /usr/local/bin/docker-compose
 ```
+
 .. note::
 
     https://docs.docker.com/compose/install/
@@ -44,35 +45,39 @@ Could be useful also for anyone interested in start developing in Golang.
 ## How to use this tool?
 
 ### 1. Clone the github repo.
-<pre>
+
+```sh
 $ git clone https://github.com/didacog/dr3dev && cd dr3dev
-</pre>
+```
 
 ### 2. Build the environment.
-<pre>
+
+```sh
 $ make build-all
-</pre>
+```
 
 This is a list of all available images possible:
-<pre>
+
+```sh
 $ docker image ls
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
 godev-vscode        1.11.5              92f50864dc00        9 seconds ago        1.31GB
 godev               1.11.5              e1202457d23a        About a minute ago   680MB
 myminio             latest              d3ed40bcfee8        21 hours ago         41.3MB
 mydb                10.3                5b376274dd85        21 hours ago         368MB
-</pre>
+```
 
 ### 2. Start the environment.
-<pre>
+
+```sh
 $ make start-backend && make start-godev
-</pre>
+```
 
 ### 4. Happy coding!! ;)
 
 ## List all available options
 
-<pre>
+```sh
 $ make help
 
 build-all                      Build all docker images [vscode: NO]
@@ -90,8 +95,25 @@ status                         Show running containers and it's state
 stop-backend                   Start Minio and MariaDB services
 stop-godev                     Stop [neovim] Development Environment 
 stop-godev-vscode              Stop [vscode] Development Environment 
-</pre>
+```
 
+## TODO (some pedings ...)
+
+# TODO
+
+done - Create compose file for godev (easy to read what is defined)
+done - Configure all containers to run with default docker network bridge for visibility
+done - Improve entrypoints for custom init.vim & tmux.conf files. Added .gitignore: 'files/dots/custom/'
+- reduce godev image size, now: ~900MB was: 680MB - some vim plugins have to be built in builder stage.
+- Add ssh service to goenv? (check image size!)
+- config TLS on all containers to encrypt all service traffic (looking at cfssl)
+- Are more utils/plugins/extensions needed in godev[-vscode]?? (check image size!)
+- Improve Makefile
+- Add more backend possible configs: HA, TLS, etc.
+- Create drlmv3 build system
+- etc.
+
+Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
 
 ## Changelog [ Release History ]
 
@@ -106,6 +128,7 @@ stop-godev-vscode              Stop [vscode] Development Environment
 	* Added VSCode config persistence and improved VSCode fonts - PR #1 - @NefixEstrada.
 	* Added install instructions for docker & docker-compose.
 	* Added support for custom configs init.vim and tmux.conf in files/dots/custom/.
+	* Moved TODO list to README file.
 	* Work in progres 
 * 0.0.9
 	* Added new goenv-vscode image.
