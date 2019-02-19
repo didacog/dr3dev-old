@@ -105,6 +105,7 @@ stop-godev-vscode              Stop [vscode] Development Environment
 	* added files/dots/bash/inputrc to improve terminal use (ctrl+L with bash vi mode).
 	* Added VSCode config persistence and improved VSCode fonts - PR #1 - @NefixEstrada.
 	* Added install instructions for docker & docker-compose.
+	* Added support for custom configs init.vim and tmux.conf in files/dots/custom/.
 	* Work in progres 
 * 0.0.9
 	* Added new goenv-vscode image.

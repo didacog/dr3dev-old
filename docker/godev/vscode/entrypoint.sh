@@ -21,7 +21,12 @@ else
 	echo "Skipping ... Go already installed!! ;)" 
 fi
 
-[ -f "$HOME"/dots/tmux.conf ] && ln -s ${HOME}/dots/tmux.conf ${HOME}/.tmux.conf
+if [ -f "$HOME"/dots/custom/tmux.conf ]; then
+	ln -s ${HOME}/dots/custom/tmux.conf ${HOME}/.tmux.conf
+else
+	[ -f "$HOME"/dots/tmux.conf ] && ln -s ${HOME}/dots/tmux.conf ${HOME}/.tmux.conf
+fi
+
 [ -f "$HOME"/dots/bash/bashrc ] && ln -sf ${HOME}/dots/bash/bashrc ${HOME}/.bashrc
 [ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
 [ -f "$HOME"/dots/bash/inputrc ] &&  ln -sf ${HOME}/dots/bash/inputrc ${HOME}/.inputrc;
