@@ -1,4 +1,4 @@
-# dr3dev [ DRLMv3 Development, Testing &amp; Build Tool ]
+# dr3dev - DRLMv3 Development, Testing &amp; Build Tool 
 
 This is a complete development environment to start contributing to the DRLMv3 FOSS Project.
 
@@ -114,7 +114,7 @@ stop-godev-vscode              Stop [vscode] Development Environment
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
 
-## Changelog [ Release History ]
+## Changelog - Release History 
 
 * 0.1.0
 	* Added release history in README.
