@@ -75,6 +75,21 @@ $ make start-backend && make start-godev
 
 ### 4. Happy coding!! ;)
 
+#### godev (nvim)
+
+This image starts with tmux session and open the editor (nvim) in first window. [Ctrl+a c] to open new terminal window inside tmux.
+
+```sh
+$ nvim go
+```
+#### godev-vscode
+
+This image starts with a bash terminal. You can start tmux if needed and launching code opens new X-window having the editor and terminal available.
+
+```sh
+$ code go
+```
+
 ## List all available options
 
 ```sh
@@ -128,6 +143,7 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Added install instructions for docker & docker-compose.
 	* Added support for custom configs init.vim and tmux.conf in files/dots/custom/.
 	* Moved TODO list to README file.
+	* Added example/explanation of how to start coding in godev - README.
 	* Work in progres 
 * 0.0.9
 	* Added new goenv-vscode image.
