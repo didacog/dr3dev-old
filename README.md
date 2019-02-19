@@ -99,11 +99,10 @@ stop-godev-vscode              Stop [vscode] Development Environment
 
 ## TODO (some pedings ...)
 
-# TODO
+* DONE - Create compose file for godev (easy to read what is defined)
+* DONE - Configure all containers to run with default docker network bridge for visibility
+* DONE - Improve entrypoints for custom init.vim & tmux.conf files. Added .gitignore: 'files/dots/custom/'
 
-done - Create compose file for godev (easy to read what is defined)
-done - Configure all containers to run with default docker network bridge for visibility
-done - Improve entrypoints for custom init.vim & tmux.conf files. Added .gitignore: 'files/dots/custom/'
 - reduce godev image size, now: ~900MB was: 680MB - some vim plugins have to be built in builder stage.
 - Add ssh service to goenv? (check image size!)
 - config TLS on all containers to encrypt all service traffic (looking at cfssl)
