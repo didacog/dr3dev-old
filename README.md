@@ -80,6 +80,7 @@ stop-godev-vscode              Stop [vscode] Development Environment
 	* Improved 'make clean-img' with safer 'prune -f' instead of 'prune -a -f'.
 	* minimal docker version 18.09.1 in README.
 	* added files/dots/bash/inputrc to improve terminal use (ctrl+L with bash vi mode).
+	* Added VSCode config persistence and improved VSCode fonts - PR #1 - @NefixEstrada
 	* Work in progres 
 * 0.0.9
 	* Added new goenv-vscode image.
@@ -117,7 +118,13 @@ stop-godev-vscode              Stop [vscode] Development Environment
 
 ## Author
 
-Didac Oliveira – [@didacog](https://twitter.com/didacog) – didac@brainupdaters.net
+* Didac Oliveira – [@didacog](https://twitter.com/didacog) – didac@drlm.org
+
+## Collaborators
+
+* Nefix Estrada - [@NefixEstrada] - nefix@drlm.org
+
+## License
 
 Distributed under the GPLv3 license. See ``LICENSE`` for more information.
 
