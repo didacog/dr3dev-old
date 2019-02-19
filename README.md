@@ -18,6 +18,29 @@ Could be useful also for anyone interested in start developing in Golang.
 - docker-compose
 - make
 
+### Install docker                                                                                                                                                                                          [10/9473]
+
+- Debian: https://docs.docker.com/install/linux/docker-ce/debian/
+- CentOS: https://docs.docker.com/install/linux/docker-ce/centos/
+- Binaries: https://docs.docker.com/install/linux/docker-ce/binaries/
+
+- Post-install: https://docs.docker.com/install/linux/linux-postinstall/
+
+.. note::
+
+    https://docs.docker.com/install/
+
+### Install docker-compose
+
+```sh
+
+    $ sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+    $ sudo chmod +x /usr/local/bin/docker-compose
+```
+.. note::
+
+    https://docs.docker.com/compose/install/
+
 ## How to use this tool?
 
 ### 1. Clone the github repo.
