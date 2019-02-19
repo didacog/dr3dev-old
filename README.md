@@ -18,7 +18,7 @@ Could be useful also for anyone interested in start developing in Golang.
 - docker-compose
 - make
 
-### Install docker                                                                                                                                                                                          [10/9473]
+### Install docker
 
 - Debian: https://docs.docker.com/install/linux/docker-ce/debian/
 - CentOS: https://docs.docker.com/install/linux/docker-ce/centos/
@@ -93,7 +93,7 @@ stop-godev-vscode              Stop [vscode] Development Environment
 </pre>
 
 
-## Release History
+## Changelog [ Release History ]
 
 * 0.1.0
 	* Added release history in README.
@@ -103,7 +103,8 @@ stop-godev-vscode              Stop [vscode] Development Environment
 	* Improved 'make clean-img' with safer 'prune -f' instead of 'prune -a -f'.
 	* minimal docker version 18.09.1 in README.
 	* added files/dots/bash/inputrc to improve terminal use (ctrl+L with bash vi mode).
-	* Added VSCode config persistence and improved VSCode fonts - PR #1 - @NefixEstrada
+	* Added VSCode config persistence and improved VSCode fonts - PR #1 - @NefixEstrada.
+	* Added install instructions for docker & docker-compose.
 	* Work in progres 
 * 0.0.9
 	* Added new goenv-vscode image.
