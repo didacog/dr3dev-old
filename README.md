@@ -14,7 +14,7 @@ Could be useful also for anyone interested in start developing in Golang.
 
 ## Requirements
 
-- docker
+- docker (18.09.1 or higher - buildkit)
 - docker-compose
 - make
 
