@@ -66,11 +66,3 @@ export npm_config_prefix=~/.node_modules
 # Set PATH
 export PATH=$PATH:/usr/local/go/bin:$HOME/.local/bin:$GOPATH/bin
 
-#export DOCKER_CONTENT_TRUST=1
-
-# if it's an ssh session export GPG_TTY
-#if [[ -n "$SSH_CLIENT" ]] || [[ -n "$SSH_TTY" ]]; then
-#	GPG_TTY=$(tty)
-#	export GPG_TTY
-#fi
-

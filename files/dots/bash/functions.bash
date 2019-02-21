@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 function mygit_status {
@@ -59,39 +58,11 @@ fs() {
 }
 
 # Use Git’s colored diff when available
-#if hash git &>/dev/null ; then
-#	diff() {
-#		git diff --no-index --color-words "$@"
-#	}
-#fi
-
-# Create a data URL from a file
-dataurl() {
-	local mimeType
-	mimeType=$(file -b --mime-type "$1")
-	if [[ $mimeType == text/* ]]; then
-		mimeType="${mimeType};charset=utf-8"
-	fi
-	echo "data:${mimeType};base64,$(openssl base64 -in "$1" | tr -d '\n')"
-}
-
-# Create a git.io short URL
-gitio() {
-	if [ -z "${1}" ] || [ -z "${2}" ]; then
-		echo "Usage: \`gitio slug url\`"
-		return 1
-	fi
-	curl -i https://git.io/ -F "url=${2}" -F "code=${1}"
-}
-
-# Start an HTTP server from a directory, optionally specifying the port
-server() {
-	local port="${1:-8000}"
-	sleep 1 && open "http://localhost:${port}/" &
-	# Set the default Content-Type to `text/plain` instead of `application/octet-stream`
-	# And serve everything as UTF-8 (although not technically correct, this doesn’t break anything for binary files)
-	python -c $'import SimpleHTTPServer;\nmap = SimpleHTTPServer.SimpleHTTPRequestHandler.extensions_map;\nmap[""] = "text/plain";\nfor key, value in map.items():\n\tmap[key] = value + ";charset=UTF-8";\nSimpleHTTPServer.test();' "$port"
-}
+if hash git &>/dev/null ; then
+	diff() {
+		git diff --no-index --color-words "$@"
+	}
+fi
 
 # Compare original and gzipped file size
 gz() {
@@ -118,35 +89,6 @@ json() {
 # Run `dig` and display the most useful info
 digga() {
 	dig +nocmd "$1" any +multiline +noall +answer
-}
-
-# UTF-8-encode a string of Unicode symbols
-escape() {
-	local args
-	mapfile -t args < <(printf "%s" "$*" | xxd -p -c1 -u)
-	printf "\\\\x%s" "${args[@]}"
-	# print a newline unless we’re piping the output to another program
-	if [ -t 1 ]; then
-		echo ""; # newline
-	fi
-}
-
-# Decode \x{ABCD}-style Unicode escape sequences
-unidecode() {
-	perl -e "binmode(STDOUT, ':utf8'); print \"$*\""
-	# print a newline unless we’re piping the output to another program
-	if [ -t 1 ]; then
-		echo ""; # newline
-	fi
-}
-
-# Get a character’s Unicode code point
-codepoint() {
-	perl -e "use utf8; print sprintf('U+%04X', ord(\"$*\"))"
-	# print a newline unless we’re piping the output to another program
-	if [ -t 1 ]; then
-		echo ""; # newline
-	fi
 }
 
 # Show all the names (CNs and SANs) listed in the SSL certificate
@@ -213,58 +155,6 @@ tre() {
 	tree -aC -I '.git' --dirsfirst "$@" | less -FRNX
 }
 
-# Call from a local repo to open the repository on github/bitbucket in browser
-# Modified version of https://github.com/zeke/ghwd
-repo() {
-	# Figure out github repo base URL
-	local base_url
-	base_url=$(git config --get remote.origin.url)
-	base_url=${base_url%\.git} # remove .git from end of string
-
-	# Fix git@github.com: URLs
-	base_url=${base_url//git@github\.com:/https:\/\/github\.com\/}
-
-	# Fix git://github.com URLS
-	base_url=${base_url//git:\/\/github\.com/https:\/\/github\.com\/}
-
-	# Fix git@bitbucket.org: URLs
-	base_url=${base_url//git@bitbucket.org:/https:\/\/bitbucket\.org\/}
-
-	# Fix git@gitlab.com: URLs
-	base_url=${base_url//git@gitlab\.com:/https:\/\/gitlab\.com\/}
-
-	# Validate that this folder is a git folder
-	if ! git branch 2>/dev/null 1>&2 ; then
-		echo "Not a git repo!"
-		exit $?
-	fi
-
-	# Find current directory relative to .git parent
-	full_path=$(pwd)
-	git_base_path=$(cd "./$(git rev-parse --show-cdup)" || exit 1; pwd)
-	relative_path=${full_path#$git_base_path} # remove leading git_base_path from working directory
-
-	# If filename argument is present, append it
-	if [ "$1" ]; then
-		relative_path="$relative_path/$1"
-	fi
-
-	# Figure out current git branch
-	# git_where=$(command git symbolic-ref -q HEAD || command git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
-	git_where=$(command git name-rev --name-only --no-undefined --always HEAD) 2>/dev/null
-
-	# Remove cruft from branchname
-	branch=${git_where#refs\/heads\/}
-
-	[[ $base_url == *bitbucket* ]] && tree="src" || tree="tree"
-	url="$base_url/$tree/$branch$relative_path"
-
-
-	echo "Calling $(type open) for $url"
-
-	open "$url" &> /dev/null || (echo "Using $(type open) to open URL failed." && exit 1);
-}
-
 # Get colors in manual pages
 man() {
 	env \
@@ -277,34 +167,6 @@ man() {
 		LESS_TERMCAP_us="$(printf '\e[1;32m')" \
 		man "$@"
 }
-
-# Use feh to nicely view images
-openimage() {
-	local types='*.jpg *.JPG *.png *.PNG *.gif *.GIF *.jpeg *.JPEG'
-
-	cd "$(dirname "$1")" || exit
-	local file
-	file=$(basename "$1")
-
-	feh -q "$types" --auto-zoom \
-		--sort filename --borderless \
-		--scale-down --draw-filename \
-		--image-bg black \
-		--start-at "$file"
-}
-
-# get dbus session
-dbs() {
-	local t=$1
-	if [[  -z "$t" ]]; then
-		local t="session"
-	fi
-
-	dbus-send --$t --dest=org.freedesktop.DBus \
-		--type=method_call	--print-reply \
-		/org/freedesktop/DBus org.freedesktop.DBus.ListNames
-}
-
 # check if uri is up
 isup() {
 	local uri=$1
@@ -396,46 +258,3 @@ golistdeps(){
 	)
 }
 
-# get the name of a x window
-xname(){
-	local window_id=$1
-
-	if [[ -z $window_id ]]; then
-		echo "Please specifiy a window id, you find this with 'xwininfo'"
-
-		return 1
-	fi
-
-	local match_string='".*"'
-	local match_qstring='"[^"\\]*(\\.[^"\\]*)*"' # NOTE: Adds 1 backreference
-
-	# get the name
-	xprop -id "$window_id" | \
-		sed -nr \
-		-e "s/^WM_CLASS\\(STRING\\) = ($match_qstring), ($match_qstring)$/instance=\\1\\nclass=\\3/p" \
-		-e "s/^WM_WINDOW_ROLE\\(STRING\\) = ($match_qstring)$/window_role=\\1/p" \
-		-e "/^WM_NAME\\(STRING\\) = ($match_string)$/{s//title=\\1/; h}" \
-		-e "/^_NET_WM_NAME\\(UTF8_STRING\\) = ($match_qstring)$/{s//title=\\1/; h}" \
-		-e "\${g; p}"
-}
-
-dell_monitor() {
-	xrandr --newmode "3840x2160_30.00"  338.75  3840 4080 4488 5136  2160 2163 2168 2200 -hsync +vsync
-	xrandr --addmode  DP1 "3840x2160_30.00"
-	xrandr --output eDP1 --auto --primary --output DP1 --mode 3840x2160_30.00 --above eDP1 --rate 30
-}
-
-govendorcheck() {
-	# shellcheck disable=SC2046
-	vendorcheck -u ./... | awk '{print $NF}' | sed -e "s#^github.com/jessfraz/$(basename $(pwd))/##"
-}
-
-restart_gpgagent(){
-	# Restart the gpg agent.
-	# shellcheck disable=SC2046
-	kill -9 $(pidof scdaemon) >/dev/null 2>&1
-	# shellcheck disable=SC2046
-	kill -9 $(pidof gpg-agent) >/dev/null 2>&1
-	gpg-connect-agent /bye >/dev/null 2>&1
-	gpg-connect-agent updatestartuptty /bye >/dev/null 2>&1
-}

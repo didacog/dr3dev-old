@@ -6,12 +6,6 @@ case $- in
 	*) return;;
 esac
 
-# Config Macbook US intl. keyboard
-#setxkbmap -layout us -variant intl -model mac
-#setxkbmap -layout us -model macbook79
-# Config US intl. keyboard (pc105)
-#setxkbmap -layout us -variant intl -model pc105
-
 # enable vi mode
 set -o vi
 
@@ -36,26 +30,10 @@ done
 shopt -s histappend                                      # append to bash_history if Terminal.app quits
 
 # Load the shell dotfiles, and then some:
-# * ~/.path can be used to extend `$PATH`.
-# * ~/.extra can be used for other settings you don’t want to commit.
-for file in ~/.bash/{colors.bash,prompt.bash,aliases.bash,functions.bash,exports.bash}; do
+for file in ~/.bash/*.bash ~/dots/custom/*.bash; do
 	if [[ -r "$file" ]] && [[ -f "$file" ]]; then
 		source "$file"
 	fi
 done
 unset file
 
-
-# Add tab completion for SSH hostnames based on ~/.ssh/config
-# ignoring wildcards
-#[[ -e "$HOME/.ssh/config" ]] && complete -o "default" \
-#	-o "nospace" \
-#	-W "$(grep "^Host" ~/.ssh/config | \
-#	grep -v "[?*]" | cut -d " " -f2 | \
-#	tr ' ' '\n')" scp sftp ssh
-
-# source kubectl bash completion
-#if hash kubectl 2>/dev/null; then
-	# shellcheck source=/dev/null
-#	source <(kubectl completion bash)
-#fi

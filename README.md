@@ -140,9 +140,12 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* added files/dots/bash/inputrc to improve terminal use (ctrl+L with bash vi mode).
 	* Added VSCode config persistence and improved VSCode fonts - PR #1 - @NefixEstrada.
 	* Added install instructions for docker & docker-compose.
-	* Added support for custom configs init.vim and tmux.conf in files/dots/custom/.
+	* Added support for custom configs init.vim and tmux.conf in `files/dots/custom/`.
 	* Moved TODO list to README file.
 	* Added example/explanation of how to start coding in godev - README.
+	* Improved README by PR#2 - @NefixEstrada
+	* Added support for custom bash config in `files/dots/custom/*.bash`.
+	* Cleanup of bash configs
 	* Work in progres 
 * 0.0.9
 	* Added new goenv-vscode image.
