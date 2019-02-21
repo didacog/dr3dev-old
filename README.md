@@ -124,6 +124,9 @@ stop-godev-vscode              Stop [vscode] Development Environment
 - Improve Makefile
 - Add more backend possible configs: HA, TLS, etc.
 - Create drlmv3 build system
+- Documentation and adjustments to work in Windows & Mac OSX systems, possible references:
+	- WIN: https://sudhakaryblog.wordpress.com/2018/08/30/run-gui-app-on-windows-xlaunch-vcxsrv/
+	- OSX: https://gist.github.com/cschiewek/246a244ba23da8b9f0e7b11a68bf3285
 - etc.
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
