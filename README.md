@@ -26,21 +26,16 @@ Could be useful also for anyone interested in start developing in Golang.
 
 - Post-install: https://docs.docker.com/install/linux/linux-postinstall/
 
-.. note::
-
-    https://docs.docker.com/install/
+**Note**: https://docs.docker.com/install/
 
 ### Install docker-compose
 
 ```sh
-
-    $ sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
-    $ sudo chmod +x /usr/local/bin/docker-compose
+$ sudo curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+$ sudo chmod +x /usr/local/bin/docker-compose
 ```
 
-.. note::
-
-    https://docs.docker.com/compose/install/
+**Note**: https://docs.docker.com/compose/install/
 
 ## How to use this tool?
 
@@ -56,6 +51,8 @@ $ git clone https://github.com/didacog/dr3dev && cd dr3dev
 $ make build-all
 ```
 
+**Note**: If you plan to use VSCode as editor, you'll need to execute `make build-godev-vscode` too.
+
 This is a list of all available images possible:
 
 ```sh
@@ -67,11 +64,13 @@ myminio             latest              d3ed40bcfee8        21 hours ago        
 mydb                10.3                5b376274dd85        21 hours ago         368MB
 ```
 
-### 2. Start the environment.
+### 3. Start the environment.
 
 ```sh
 $ make start-backend && make start-godev
 ```
+
+**Note**: If you plan to use VSCode, you need to execute `make start-backend && make start-godev-vscode` instead
 
 ### 4. Happy coding!! ;)
 
@@ -114,9 +113,9 @@ stop-godev-vscode              Stop [vscode] Development Environment
 
 ## TODO (some pedings ...)
 
-* DONE - Create compose file for godev (easy to read what is defined)
-* DONE - Configure all containers to run with default docker network bridge for visibility
-* DONE - Improve entrypoints for custom init.vim & tmux.conf files. Added .gitignore: 'files/dots/custom/'
+* :ballot_box_with_check: - Create compose file for godev (easy to read what is defined)
+* :ballot_box_with_check: - Configure all containers to run with default docker network bridge for visibility
+* :ballot_box_with_check: - Improve entrypoints for custom init.vim & tmux.conf files. Added .gitignore: 'files/dots/custom/'
 
 - reduce godev image size, now: ~900MB was: 680MB - some vim plugins have to be built in builder stage.
 - Add ssh service to goenv? (check image size!)
