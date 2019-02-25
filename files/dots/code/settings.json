@@ -1,5 +1,6 @@
 {
     "editor.fontLigatures": true,
     "telemetry.enableCrashReporter": false,
-    "telemetry.enableTelemetry": false
+    "telemetry.enableTelemetry": false,
+    "terminal.integrated.rendererType": "dom"
 }
