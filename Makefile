@@ -6,12 +6,12 @@
 .PHONY: build-godev
 build-godev: ## Builds [neovim] Development Environment 
 	@echo "Building godev [neovim] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/nvim/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.12 ./docker/godev/nvim/
 
 .PHONY: build-godev-vscode
 build-godev-vscode: ## Builds [vscode] Development Environment 
 	@echo "Building godev [vscode] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.11.5 ./docker/godev/vscode/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.12 ./docker/godev/vscode/
 
 .PHONY: build-backend
 build-backend: ## Builds Backend images with correct UID/GIDs for Development Environment 
@@ -96,6 +96,9 @@ stop-backend: ## Start Minio and MariaDB services
 .PHONY: start-all
 start-all: start-tls start-backend start-godev ## Start complete Development Environment
 
+.PHONY: stop-all
+stop-all: stop-tls stop-backend stop-godev stop-godev-vscode ## Stop complete Development Environment
+
 .PHONY: clean-godev
 clean-godev: ## Clean Golang, Vim plugin and VScode files
 	@echo "Cleaning up Go dev env (golang and vim plugins) ..."
@@ -119,8 +122,8 @@ clean-tls: ## Clean TLS CA
 .PHONY: clean-img
 clean-img: ## Clean all related docker images
 	@echo "Cleaning up all docker images (godev, minio & mariadb) ..."
-	docker image rm godev:1.11.5 -f
-	docker image rm godev-vscode:1.11.5 -f
+	docker image rm godev:1.12 -f
+	docker image rm godev-vscode:1.12 -f
 	docker image rm myminio:latest -f
 	docker image rm mydb:10.3 -f
 	docker image rm mytls:latest -f
@@ -132,7 +135,7 @@ clean-net: ## Clean all related docker networks
 	docker network rm dr3env
 
 .PHONY: clean-all
-clean-all: clean-godev clean-backend clean-tls clean-img clean-net ## Clean all data - Wipe all data
+clean-all: stop-all clean-godev clean-backend clean-tls clean-img clean-net ## Clean all data - Wipe all data
 
 .PHONY: status
 status: ## Show running containers and it's state
