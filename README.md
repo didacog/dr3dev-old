@@ -139,6 +139,9 @@ stop-tls                       Stop CFSSL service (TLS)
 - Documentation and adjustments to work in Windows & Mac OSX systems, possible references:
 	- WIN: https://sudhakaryblog.wordpress.com/2018/08/30/run-gui-app-on-windows-xlaunch-vcxsrv/
 	- OSX: https://gist.github.com/cschiewek/246a244ba23da8b9f0e7b11a68bf3285
+- Mutual TLS:
+	- Use TLS from client side GORM (https://stackoverflow.com/questions/52962028/how-to-create-ssl-connection-to-mysql-with-gorm)
+	- Use TLS from client side MINIO cli-sdk
 - etc.
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
