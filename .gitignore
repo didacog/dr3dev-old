@@ -4,3 +4,7 @@ files/minio/data/*
 files/vimplug/*
 files/vscode/*
 files/dots/custom/*
+files/tls/minio/*
+files/tls/ca/*
+files/tls/mariadb/*
+files/tls/godev/*

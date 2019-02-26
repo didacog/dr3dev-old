@@ -18,7 +18,9 @@ services:
             - ${PWD}/files/db/conf:/etc/mysql/conf.d
         ports:
             - 3306:3306
-        network_mode: "bridge"
+              #        network_mode: "bridge"
+        networks:
+            - dr3env
     
     minio:
         # The minio config.json setting DRLMv3 options for dev/test/prod purposes
@@ -33,7 +35,11 @@ services:
             - ${PWD}/files/minio/data:${HOME}/.minio/data
         ports:
             - 9000:9000
-        network_mode: "bridge"
+              #        network_mode: "bridge"
+        networks:
+            - dr3env
         command: server .minio/data
 
-
+networks:
+    dr3env:
+        external: true

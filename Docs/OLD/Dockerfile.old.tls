@@ -1,0 +1,25 @@
+FROM cfssl/cfssl:latest
+
+# Create User
+ARG MYUSER=developer
+ARG     MYUID=1000
+ARG     MYGID=1000
+
+ENV MYUSER=${MYUSER} \
+MYUID=${MYUID} \
+MYGID=${MYGID}
+
+RUN addgroup --system --gid ${MYGID} ${MYUSER} && \
+	adduser --system ${MYUSER} --uid ${MYUID} --gid ${MYGID} --shell /bin/bash
+
+COPY entrypoint.sh /usr/local/bin/
+
+USER ${MYUSER}
+
+WORKDIR /home/${MYUSER}
+
+EXPOSE 8888
+
+ENTRYPOINT ["entrypoint.sh"]
+
+CMD ["cfssl","serve","-ca=/tls/ca/ca.pem","-ca-key=/tls/ca/ca-key.pem","-address=0.0.0.0"]

@@ -1,0 +1,22 @@
+version: '3.7'
+
+services:
+
+    tls:
+        # cfssl CA server
+        # 
+        image: mytls:latest
+#        environment:
+        restart: on-failure
+        volumes:
+            - ${PWD}/files/tls:/tls
+        ports:
+            - 8888:8888
+              #        network_mode: "bridge"
+        networks:
+            - dr3env
+
+networks:
+    dr3env:
+        external: true
+

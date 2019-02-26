@@ -27,7 +27,7 @@ services:
         # The point will be to use some PKI infra to autogenerate all the TLS certificates, I'm looking
         # at cfssl to get all required certs automatically.
 
-        image: mariadb:10.3
+        image: mydb:10.3
         environment:
             MYSQL_ROOT_PASSWORD: drlm3db
             MYSQL_DATABASE: drlm3
@@ -35,11 +35,13 @@ services:
             MYSQL_PASSWORD: drlm3db
         restart: on-failure
         volumes:
-            - ${PWD}/db/data:/var/lib/mysql
-            - ${PWD}/db/conf:/etc/mysql/conf.d
-            - ${PWD}/db/tls:/tls
+            - ${PWD}/files/db/data:/var/lib/mysql
+            - ${PWD}/files/db/conf:/etc/mysql/conf.d
+            - ${PWD}/files/tls:/tls
         ports:
             - 3306:3306
+        networks:
+            - dr3env
     
     minio:
         # The minio config.json setting DRLMv3 options for dev/test/prod purposes
@@ -50,14 +52,21 @@ services:
         # TODO: 
         # Certificate autogeneration (cfssl??)
 
-        image: minio/minio
+        image: myminio:latest
         environment:
             MINIO_ACCESS_KEY: drlm3minio
             MINIO_SECRET_KEY: drlm3minio
         restart: on-failure
         volumes:
-            - ${PWD}/minio/data:/.minio/data
-            - ${PWD}/minio/tls:/.minio/certs
+            - ${PWD}/files/minio/data:${HOME}/.minio/data
+            - ${PWD}/files/tls/minio:${HOME}/.minio/certs
         ports:
             - 9443:9443
-        command: server --address ":9443" /.minio/data
+        networks:
+            - dr3env
+        command: server --address ":9443" .minio/data
+
+
+networks:
+    dr3env:
+        external: true

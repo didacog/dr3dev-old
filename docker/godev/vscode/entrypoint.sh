@@ -6,7 +6,7 @@ set -e
 
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
-	GOLANG_VERSION=1.11.5
+	GOLANG_VERSION=1.12
 	ARCH=amd64 
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
@@ -43,6 +43,19 @@ code --install-extension vector-of-bool.gitflow
 code --install-extension mads-hartmann.bash-ide-vscode
 
 go get github.com/sourcegraph/go-langserver
+
+if [ -f ${HOME}/go/dr3env.ghuser ]; then
+	user=$(cat ${HOME}/go/dr3env.ghuser)
+	workdir="${HOME}/go/src/github.com/${user}"
+	mkdir -vp ${workdir}
+	for repo in common cli agent core
+	do
+		git clone https://github.com/${user}/drlm-${repo} ${workdir}/drlm-${repo} && \
+			cd ${workdir}/drlm-${repo} && \
+			git flow init -d && \
+			cd
+	done
+fi
 
 exec "$@"
 

@@ -18,6 +18,8 @@ Could be useful also for anyone interested in start developing in Golang.
 - docker-compose
 - make
 
+**Note**: You should have forked github.com/brainupdaters/drlm-{cli,agent,core,common} in Your GitHub account before start with the following instructions.
+
 ### Install docker
 
 - Debian: https://docs.docker.com/install/linux/docker-ce/debian/
@@ -58,19 +60,22 @@ This is a list of all available images possible:
 ```sh
 $ docker image ls
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-godev-vscode        1.11.5              92f50864dc00        9 seconds ago        1.31GB
-godev               1.11.5              e1202457d23a        About a minute ago   680MB
-myminio             latest              d3ed40bcfee8        21 hours ago         41.3MB
+godev-vscode        1.12                92f50864dc00        9 seconds ago        1.31GB
+godev               1.12                e1202457d23a        About a minute ago   917MB
+myminio             latest              d3ed40bcfee8        21 hours ago         54.3MB
 mydb                10.3                5b376274dd85        21 hours ago         368MB
+mytls               latest              c50cce809f39        13 hours ago        68.1MB
 ```
 
 ### 3. Start the environment.
 
 ```sh
-$ make start-backend && make start-godev
+$ make start-backend && make start-godev ghuser=<Your_GitHub_Username>
+or
+$ make start-all ghuser=<Your_GitHub_Username>
 ```
 
-**Note**: If you plan to use VSCode, you need to execute `make start-backend && make start-godev-vscode` instead
+**Note**: If you plan to use VSCode, you need to execute `make start-backend && make start-godev-vscode ghuser=<Your_GitHub_Username>` instead
 
 ### 4. Happy coding!! ;)
 
@@ -79,14 +84,14 @@ $ make start-backend && make start-godev
 This image starts with tmux session and open the editor (nvim) in first window. [Ctrl+a c] to open new terminal window inside tmux.
 
 ```sh
-$ nvim go
+$ nvim go/src/github.com/<Your_GitHub_Username>
 ```
 #### godev-vscode
 
 This image starts with a bash terminal. You can start tmux if needed and launching code opens new X-window having the editor and terminal available.
 
 ```sh
-$ code go
+$ code go/src/github.com/<Your_GitHub_Username>
 ```
 
 ## List all available options
@@ -95,20 +100,27 @@ $ code go
 $ make help
 
 build-all                      Build all docker images [vscode: NO]
-build-backend                  Builds Backend images with correct UID/GIDs for Development Environment 
-build-godev                    Builds [neovim] Development Environment 
-build-godev-vscode             Builds [vscode] Development Environment 
+build-backend                  Builds Backend images with correct UID/GIDs for Development Environment
+build-godev                    Builds [neovim] Development Environment
+build-godev-vscode             Builds [vscode] Development Environment
+build-net                      Build all required docker networks
+build-tls                      Builds CFSSL image with correct UID/GIDs for Development Environment
 clean-all                      Clean all data - Wipe all data
 clean-backend                  Clean Minio and MariaDb files
 clean-godev                    Clean Golang, Vim plugin and VScode files
 clean-img                      Clean all related docker images
+clean-net                      Clean all related docker networks
+clean-tls                      Clean TLS CA
+start-all                      Start complete Development Environment
 start-backend                  Start Minio and MariaDB services
-start-godev                    Start [neovim] Development Environment 
-start-godev-vscode             Start [vscode] Development Environment 
+start-godev                    Start [neovim] Development Environment
+start-godev-vscode             Start [vscode] Development Environment
+start-tls                      Start CFSSL service (TLS)
 status                         Show running containers and it's state
 stop-backend                   Start Minio and MariaDB services
-stop-godev                     Stop [neovim] Development Environment 
-stop-godev-vscode              Stop [vscode] Development Environment 
+stop-godev                     Stop [neovim] Development Environment
+stop-godev-vscode              Stop [vscode] Development Environment
+stop-tls                       Stop CFSSL service (TLS)
 ```
 
 ## TODO (some pedings ...)
@@ -133,6 +145,13 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 
 ## Changelog - Release History 
 
+* 0.1.1
+	* Added TLS service with cfssl container to provide TLS certificates to the entire environment.
+	* Automated git clone, gitflow init of all drlm3 repos.
+	* Added docker network creation to enable correct communication between all containers in the environment.
+	* Updated README with new features
+	* Golang 1.12 released, changed to use GO version 1.12.
+	* Work in progres 
 * 0.1.0
 	* Added release history in README.
 	* Added `make help` & `docker image ls` in README for documentation.
@@ -146,10 +165,9 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Added support for custom configs init.vim and tmux.conf in `files/dots/custom/`.
 	* Moved TODO list to README file.
 	* Added example/explanation of how to start coding in godev - README.
-	* Improved README by PR#2 - @NefixEstrada
+	* Improved README by PR#2 - @NefixEstrada.
 	* Added support for custom bash config in `files/dots/custom/*.bash`.
-	* Cleanup of bash configs
-	* Work in progres 
+	* Cleanup of bash configs.
 * 0.0.9
 	* Added new goenv-vscode image.
 	* Quick start in README.
