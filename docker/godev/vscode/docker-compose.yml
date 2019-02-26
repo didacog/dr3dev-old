@@ -5,7 +5,7 @@ services:
     godev:
         # The DRLMv3 development environment with:
         # tmux - nvim - vscode - git - gitflow 
-        image: godev-vscode:1.11.5
+        image: godev-vscode:1.12
         environment:
             - DISPLAY=${DISPLAY}
         volumes:
