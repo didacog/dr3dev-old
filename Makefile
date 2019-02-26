@@ -144,3 +144,12 @@ status: ## Show running containers and it's state
 .PHONY: help
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
+	@echo ""
+	@echo "Possible Arguments:"
+	@echo ""
+	@echo "ghuser:	Setting your GitHub user will automate DRLMv3 GitHub repos setup"
+	@echo "	in-place with upstream remotes, git-flow init, ..."
+	@echo "	Fork of all DRLMv3 repos must be done from your GitHub account in browser."
+	@echo "	example:"
+	@echo "		make start-all ghuser=didacog"	
+

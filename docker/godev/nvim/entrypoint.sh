@@ -57,10 +57,18 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 	mkdir -vp ${workdir}
 	for repo in common cli agent core
 	do
-		git clone https://github.com/${user}/drlm-${repo} ${workdir}/drlm-${repo} && \
+		if [ ! -d ${workdir}/drlm-${repo}/.git ]; then
+			git clone https://github.com/${user}/drlm-${repo} ${workdir}/drlm-${repo} && \
+				cd ${workdir}/drlm-${repo} && \
+				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
+				git config url."https://${user}@github.com".InsteadOf "https://github.com" && \
+				git flow init -d && \
+				cd
+		else
 			cd ${workdir}/drlm-${repo} && \
-			git flow init -d && \
-			cd
+				git fetch upstream && \
+				cd
+		fi
 	done
 fi
 
