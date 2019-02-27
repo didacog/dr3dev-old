@@ -13,10 +13,11 @@ services:
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vimplug:${HOME}/.vim/plugged 
 #        ports:
+        networks:
+            - dr3env
 #        command: bash -c "tmux new -s DRLMv3_DevEnv 'nvim go'"
         command: bash 
 
 networks:
-  default:
-    external:
-      name: bridge
+    dr3env:
+        external: true

@@ -50,7 +50,7 @@ $ git clone https://github.com/didacog/dr3dev && cd dr3dev
 ### 2. Build the environment.
 
 ```sh
-$ make build-all
+$ make build-all [ editor=vscode (default: nvim) ]
 ```
 
 **Note**: If you plan to use VSCode as editor, you'll need to execute `make build-godev-vscode` too.
@@ -70,9 +70,7 @@ mytls               latest              c50cce809f39        13 hours ago        
 ### 3. Start the environment.
 
 ```sh
-$ make start-backend && make start-godev ghuser=<Your_GitHub_Username>
-or
-$ make start-all ghuser=<Your_GitHub_Username>
+$ make start-all [ tls=true (default: false) ] [ editor=vscode (default: nvim) ] [ ghuser=<Your_GitHub_Username> (default: not set) ]
 ```
 
 **Note**: If you plan to use VSCode, you need to execute `make start-backend && make start-godev-vscode ghuser=<Your_GitHub_Username>` instead
@@ -99,9 +97,10 @@ $ code go/src/github.com/<Your_GitHub_Username>
 ```sh
 $ make help
 
-build-all                      Build all docker images [vscode: NO]
+build-all                      Build all docker images
 build-backend                  Builds Backend images with correct UID/GIDs for Development Environment
-build-godev                    Builds [neovim] Development Environment
+build-godev                    Builds Development Environment specified by editor=[nvim|vscode]
+build-godev-nvim               Builds [neovim] Development Environment
 build-godev-vscode             Builds [vscode] Development Environment
 build-net                      Build all required docker networks
 build-tls                      Builds CFSSL image with correct UID/GIDs for Development Environment
@@ -113,14 +112,33 @@ clean-net                      Clean all related docker networks
 clean-tls                      Clean TLS CA
 start-all                      Start complete Development Environment
 start-backend                  Start Minio and MariaDB services
-start-godev                    Start [neovim] Development Environment
+start-godev-nvim               Start [neovim] Development Environment
+start-godev                    Start [$editor] Development Environment
 start-godev-vscode             Start [vscode] Development Environment
 start-tls                      Start CFSSL service (TLS)
 status                         Show running containers and it's state
+stop-all                       Stop complete Development Environment
 stop-backend                   Start Minio and MariaDB services
-stop-godev                     Stop [neovim] Development Environment
+stop-godev-nvim                Stop [neovim] Development Environment
+stop-godev                     Stop [$editor] Development Environment
 stop-godev-vscode              Stop [vscode] Development Environment
 stop-tls                       Stop CFSSL service (TLS)
+
+Possible Arguments:
+
+ghuser: Setting your GitHub user will automate DRLMv3 GitHub repos setup
+        in-place with upstream remotes, git-flow init, ...
+		Fork of all DRLMv3 repos must be done from your GitHub account in browser.
+	example:
+		make start-all ghuser=didacog
+
+tls:    Set to TRUE to enable TLS certificates autogeneration and default TLS config for services.
+	example:
+		make start-all tls=true
+
+editor: Set the godev image to use: NeoVim or VSCode
+	example:
+		make start-all editor=vscode
 ```
 
 ## TODO (some pedings ...)
@@ -150,10 +168,15 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 
 * 0.1.1
 	* Added TLS service with cfssl container to provide TLS certificates to the entire environment.
-	* Automated git clone, gitflow init of all drlm3 repos.
+	* Automated git clone, gitflow init of all drlm3 repos. Use arg ghuser="YourGitHubUser" in make [start-godev|start-godev-vscode].
 	* Added docker network creation to enable correct communication between all containers in the environment.
 	* Updated README with new features
 	* Golang 1.12 released, changed to use GO version 1.12.
+	* Solved network resoultion between containers in env.
+	* Solved ghuser argument issues. Now does what is meant to do.
+	* Improved Makefile commands with args: tls=[true|false(default)] editor=[vscode|nvim(default)]
+	* Updated README instructions to match Makefile commands.
+	* Solved Go Modules now working in godev.
 	* Work in progres 
 * 0.1.0
 	* Added release history in README.

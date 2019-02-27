@@ -14,10 +14,12 @@ services:
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vscode:${HOME}/.vscode-oss/
             - /tmp/.X11-unix:/tmp/.X11-unix
+        networks:
+            - dr3env
 #        ports:
 #        command: code ${HOME}/go
 
 networks:
-  default:
-    external:
-      name: bridge
+    dr3env:
+        external: true
+
