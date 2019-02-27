@@ -177,6 +177,7 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Improved Makefile commands with args: tls=[true|false(default)] editor=[vscode|nvim(default)]
 	* Updated README instructions to match Makefile commands.
 	* Solved Go Modules now working in godev.
+	* Solved build-net error in Makefile
 	* Work in progres 
 * 0.1.0
 	* Added release history in README.

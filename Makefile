@@ -42,10 +42,7 @@ build-tls: ## Builds CFSSL image with correct UID/GIDs for Development Environme
 .PHONY: build-net
 build-net: ## Build all required docker networks
 	@echo "Setting up dr3env docker network ..."
-net = $(shell docker network inspect dr3env > /dev/null 2>&1)
-ifndef net
-		docker network create --attachable dr3env
-endif
+	docker network create --attachable dr3env || true
 
 .PHONY: build-all
 build-all: build-net build-tls build-backend build-godev ## Build all docker images 
@@ -176,7 +173,7 @@ clean-img: ## Clean all related docker images
 .PHONY: clean-net
 clean-net: ## Clean all related docker networks
 	@echo "Cleaning up dr3env docker network ..."
-	docker network rm dr3env
+	docker network rm dr3env || true
 
 .PHONY: clean-all
 clean-all: stop-all clean-godev clean-backend clean-tls clean-img clean-net ## Clean all data - Wipe all data
