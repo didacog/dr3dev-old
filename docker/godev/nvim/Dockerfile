@@ -34,7 +34,7 @@ COPY --from=builder /build/*/*.pkg.tar.xz /tmp
 
 RUN --mount=type=bind,from=builder,source=/var/cache/pacman,target=/var/cache/pacman --mount=type=bind,from=builder,source=/var/lib/pacman/sync,target=/var/lib/pacman/sync \
 #	pacman -Sy && \
-	pacman --needed --noconfirm -S sudo git bash-completion gzip tar neovim python python-neovim tmux make gawk sed which gcc && \
+	pacman --needed --noconfirm -S make sudo git bash-completion gzip tar neovim python python-neovim tmux make gawk sed which gcc && \
 #	autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make patch pkgconf sed texinfo util-linux which && \
 #	pacman --noconfirm -U /tmp/yay.pkg.tar.xz && \
 	pacman --noconfirm -U /tmp/gitflow-avh.pkg.tar.xz && \
