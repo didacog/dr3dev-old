@@ -92,6 +92,8 @@ This image starts with a bash terminal. You can start tmux if needed and launchi
 $ code go/src/github.com/<Your_GitHub_Username>
 ```
 
+**Note**: In order to have required Go binaries for vscode-go extension to work. In the Code editor window do: [ Ctrl+Shift+P ] 'Go: Install/Update Tools'
+
 ## List all available options
 
 ```sh
@@ -178,6 +180,8 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Updated README instructions to match Makefile commands.
 	* Solved Go Modules now working in godev.
 	* Solved build-net error in Makefile
+	* More info in `make status`
+	* Added protobuffers install in entrypoints and other DRLM go tools dependencies like cobra.
 	* Work in progres 
 * 0.1.0
 	* Added release history in README.

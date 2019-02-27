@@ -180,6 +180,16 @@ clean-all: stop-all clean-godev clean-backend clean-tls clean-img clean-net ## C
 
 .PHONY: status
 status: ## Show running containers and it's state
+	@echo "-- dr3env - Defined Networks: ---------------------------"
+	@echo ""
+	@docker network ls -f name=dr3env
+	@echo ""
+	@echo "-- dr3env - Built Images: -------------------------------"
+	@echo ""
+	@docker image ls 
+	@echo ""
+	@echo "-- dr3env - Running Containers: -------------------------"
+	@echo ""
 	@docker ps
 
 .PHONY: help

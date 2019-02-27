@@ -12,19 +12,6 @@ RUN pacman -Syy && pacman --needed --noconfirm -S sudo git bash-completion tmux 
 	sudo -u builder bash -c 'cd ~ && git clone https://aur.archlinux.org/gitflow-bashcompletion-avh.git gitflow-bc && cd gitflow-bc && makepkg -s --noconfirm && mv gitflow*.pkg.tar.xz gitflow-bc-avh.pkg.tar.xz'
 #	sudo -u builder bash -c 'cd ~ && git clone https://aur.archlinux.org/visual-studio-code-bin.git vscode && cd vscode && makepkg -s --noconfirm && mv visual*.pkg.tar.xz vscode.pkg.tar.xz'
 
-## Install Golang
-#ENV GOLANG_VERSION=1.11.5 \
-#	ARCH=amd64 
-#
-#RUN set -eux; \
-#	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz" && \
-#	curl -fLo go.tgz "$url" && \
-#	#echo "${goRelSha256} *go.tgz" | sha256sum -c - && \
-#	tar -C /usr/local -xzf go.tgz && \
-#	rm go.tgz && \
-#	export PATH="/usr/local/go/bin:$PATH" && \
-#	go version
-
 FROM archlinux/base:latest
 
 LABEL maintainer Didac Oliveira "didac@drlm.org"
@@ -35,7 +22,7 @@ COPY --from=builder /build/*/*.pkg.tar.xz /tmp
 
 RUN --mount=type=bind,from=builder,source=/var/cache/pacman,target=/var/cache/pacman --mount=type=bind,from=builder,source=/var/lib/pacman/sync,target=/var/lib/pacman/sync \
 #	pacman -Sy && \
-	pacman --needed --noconfirm -S make sudo git bash-completion gzip tar tmux code otf-fira-code && \
+	pacman --needed --noconfirm -S make sudo git bash-completion gzip tar tmux code otf-fira-code gawk unzip && \
 #	autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make patch pkgconf sed texinfo util-linux which && \
 #	pacman --noconfirm -U /tmp/yay.pkg.tar.xz && \
 	pacman --noconfirm -U /tmp/gitflow-avh.pkg.tar.xz && \

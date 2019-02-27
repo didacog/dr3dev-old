@@ -7,15 +7,29 @@ if [ ! -x /usr/local/go/bin/go ]; then
 	ARCH=amd64 
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
-	#set -eux
-	curl -fLo go.tgz "$url" 
-	#echo "${goRelSha256} *go.tgz" | sha256sum -c - && \
-	sudo tar -C /usr/local -xzf go.tgz 
-	rm go.tgz &&
-	export PATH="/usr/local/go/bin:$PATH"
+	echo "Installing Golang version ${GOLANG_VERSION} ..."
 
+	curl -fLo go.tgz "$url" 
+	sudo tar -C /usr/local -xzf go.tgz 
+	rm go.tgz
+	export PATH="/usr/local/go/bin:$PATH"
 else
 	echo "Skipping ... Go already installed!! ;)" 
+fi
+
+if [ ! -x /usr/local/bin/protoc ]; then
+	# Install Protobuffers
+	PROTO_VERSION=3.6.1
+	ARCH=x86_64
+	url="https://github.com/protocolbuffers/protobuf/releases/download/v${PROTO_VERSION}/protoc-${PROTO_VERSION}-linux-${ARCH}.zip"
+
+	echo "Installing Protocol buffers ${PROTO_VERSION} ..."
+
+	curl -fLo proto.zip "$url"
+	sudo unzip -d /usr/local proto.zip
+	rm proto.zip
+else
+	echo "Skipping ... Protobuffers already installed!! ;)"
 fi
 
 if [ -f "$HOME"/dots/custom/tmux.conf ]; then
@@ -40,6 +54,10 @@ code --install-extension vector-of-bool.gitflow
 code --install-extension mads-hartmann.bash-ide-vscode
 
 go get github.com/sourcegraph/go-langserver
+go get -u google.golang.org/grpc
+go get -u github.com/spf13/cobra/cobra
+go get -u github.com/Sirupsen/logrus
+go get -u github.com/golang/protobuf/protoc-gen-go
 
 if [ -f ${HOME}/go/dr3env.ghuser ]; then
 	user=$(cat ${HOME}/go/dr3env.ghuser)
@@ -50,8 +68,9 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 		if [ ! -d ${workdir}/drlm-${repo}/.git ]; then
 			git clone https://github.com/${user}/drlm-${repo} ${workdir}/drlm-${repo} && \
 				cd ${workdir}/drlm-${repo} && \
-				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
 				git config url."https://${user}@github.com".InsteadOf "https://github.com" && \
+				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
+				git fetch upstream && \
 				git flow init -d && \
 				cd
 		else
