@@ -176,6 +176,8 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Added protobuffers install in entrypoints and other DRLM go tools dependencies like cobra.
 	* Added gitname & gitmail arguments to configure git global name and mail for commit signatures.
 	* Improved Makefile, more simple and with smaller help output.
+	* Improved vscode compose file to avoid vscode crashes (ipc: host & -v /dev/shm:/dev/shm)
+	* Solved some minor issues
 	* Work in progres 
 * 0.1.0
 	* Added release history in README.

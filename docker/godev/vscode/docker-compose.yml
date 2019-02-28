@@ -8,6 +8,7 @@ services:
         image: godev-vscode:1.12
         environment:
             - DISPLAY=${DISPLAY}
+        ipc: host
         volumes:
             - ${PWD}/files/golang/goroot:/usr/local/go
             - ${PWD}/files/golang/protoc:/usr/local/protoc
@@ -15,6 +16,7 @@ services:
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vscode:${HOME}/.vscode-oss/
             - /tmp/.X11-unix:/tmp/.X11-unix
+            - /dev/shm:/dev/shm
         networks:
             - dr3env
 #        ports:

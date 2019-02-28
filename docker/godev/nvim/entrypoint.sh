@@ -23,7 +23,7 @@ else
 	echo "Skipping ... Go already installed!! ;)" 
 fi
 
-if [ ! -x /usr/local/bin/protoc ]; then
+if [ ! -x /usr/local/protoc/bin/protoc ]; then
 	# Install Protobuffers
 	PROTO_VERSION=3.6.1
 	ARCH=x86_64
@@ -70,7 +70,7 @@ go get -u github.com/spf13/cobra/cobra
 go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
 
-if [ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]; then
+if [[ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]]; then
 	name=$(cat ${HOME}/go/dr3env.gitname)
 	mail=$(cat ${HOME}/go/dr3env.gitmail)
 	echo "[user]" > ${HOME}/.gitconfig
