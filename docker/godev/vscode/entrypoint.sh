@@ -3,7 +3,7 @@ set -e
 
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
-	GOLANG_VERSION=1.12
+	GOLANG_VERSION=1.11.5
 	ARCH=amd64 
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
@@ -59,11 +59,12 @@ go get -u google.golang.org/grpc
 go get -u github.com/spf13/cobra/cobra
 go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
-# DRLMv3 deps
-go get -u github.com/brainupdaters/drlm-common
+
 go get -u github.com/brainupdaters/drlm-core
 go get -u github.com/brainupdaters/drlm-cli
-go get -u github.com/brainupdaters/drlm-agent
+go get -u github.com/brainupdaters/drlm-common/comms
+go get -u github.com/brainupdaters/drlm-common/logger
+#go get -u github.com/brainupdaters/drlm-agent
 
 if [[ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]]; then
 	name=$(cat ${HOME}/go/dr3env.gitname)
@@ -88,10 +89,12 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
 				git fetch upstream && \
 				git flow init -d && \
+#				go mod tidy && \
 				cd
 		else
 			cd ${workdir}/drlm-${repo} && \
 				git fetch upstream && \
+#				go mod tidy && \
 				cd
 		fi
 	done

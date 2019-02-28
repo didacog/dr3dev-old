@@ -60,8 +60,8 @@ This is a list of all available images possible:
 ```sh
 $ docker image ls
 REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-godev-vscode        1.12                92f50864dc00        9 seconds ago        1.31GB
-godev               1.12                e1202457d23a        About a minute ago   917MB
+godev-vscode        1.11.5              92f50864dc00        9 seconds ago        1.31GB
+godev               1.11.5              e1202457d23a        About a minute ago   917MB
 myminio             latest              d3ed40bcfee8        21 hours ago         54.3MB
 mydb                10.3                5b376274dd85        21 hours ago         368MB
 mytls               latest              c50cce809f39        13 hours ago        68.1MB
@@ -70,8 +70,8 @@ mytls               latest              c50cce809f39        13 hours ago        
 ### 3. Start the environment.
 
 ```sh
-$ make start-all [ tls=true (default: false) ] [ editor=vscode (default: nvim) ] \
-	[ ghuser=didacog (default: not set) ] [ gitname='Didac Oliveira' (default: not set) ] [ gitmail=didac@drlm.org (default: not set) ]
+$ make start-all [ tls=true (default: false) ] [ editor=vscode (default: nvim) ] [ ghuser=didacog (default: not set) ] \
+	[ gitname='Didac Oliveira' (default: not set) ] [ gitmail=didac@drlm.org (default: not set) ]
 ```
 
 ### 4. Happy coding!! ;)
@@ -160,6 +160,9 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 
 ## Changelog - Release History 
 
+* 0.1.2
+	* Rollback to Go version 1.11.5 due to strange problems with modules in version 1.12.
+	* Work in progres 
 * 0.1.1
 	* Added TLS service with cfssl container to provide TLS certificates to the entire environment.
 	* Automated git clone, gitflow init of all drlm3 repos. Use arg ghuser="YourGitHubUser" in make [start-godev|start-godev-vscode].
@@ -179,7 +182,6 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Improved vscode compose file to avoid vscode crashes (ipc: host & -v /dev/shm:/dev/shm)
 	* Solved some minor issues
 	* Added required go get github.com/brainupdaters/drlm-{core,cli,common,agent} to godev.
-	* Work in progres 
 * 0.1.0
 	* Added release history in README.
 	* Added `make help` & `docker image ls` in README for documentation.

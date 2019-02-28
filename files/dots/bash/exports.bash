@@ -58,7 +58,7 @@ export QT_DEVICE_PIXEL_RATIO=2
 
 # Golang env vars
 export GOPATH=$HOME/go
-export GO111MODULE=on 
+#export GO111MODULE=on 
 
 # NPM for global packages non-root
 PATH="$HOME/.node_modules/bin:$PATH"

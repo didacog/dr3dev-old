@@ -17,14 +17,14 @@ build-godev: build-godev-nvim build-godev-vscode # Builds Development Environmen
 build-godev-nvim: # Builds [neovim] Development Environment 
 ifeq ($(editor),nvim)
 	@echo "Building godev [neovim] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.12 ./docker/godev/nvim/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/nvim/
 endif
 
 .PHONY: build-godev-vscode
 build-godev-vscode: # Builds [vscode] Development Environment 
 ifeq ($(editor),vscode)
 	@echo "Building godev [vscode] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.12 ./docker/godev/vscode/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.11.5 ./docker/godev/vscode/
 endif
 
 .PHONY: build-backend
@@ -177,8 +177,8 @@ clean-tls: # Clean TLS CA
 .PHONY: clean-img
 clean-img: ## Clean all related docker images
 	@echo "Cleaning up all docker images (godev, minio & mariadb) ..."
-	docker image rm godev:1.12 -f
-	docker image rm godev-vscode:1.12 -f
+	docker image rm godev:1.11.5 -f
+	docker image rm godev-vscode:1.11.5 -f
 	docker image rm myminio:latest -f
 	docker image rm mydb:10.3 -f
 	docker image rm mytls:latest -f

@@ -6,7 +6,7 @@ set -e
 
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
-	GOLANG_VERSION=1.12
+	GOLANG_VERSION=1.11.5
 	ARCH=amd64 
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
@@ -57,6 +57,8 @@ fi
 
 touch ${HOME}/.bash_history
 
+#export GO111MODULE=on
+
 # Install Vim Plugins + vim-go binaries
 #curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
 nvim --headless +qall 
@@ -69,6 +71,12 @@ go get -u google.golang.org/grpc
 go get -u github.com/spf13/cobra/cobra
 go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
+
+go get -u github.com/brainupdaters/drlm-core
+go get -u github.com/brainupdaters/drlm-cli
+go get -u github.com/brainupdaters/drlm-common/comms
+go get -u github.com/brainupdaters/drlm-common/logger
+#go get -u github.com/brainupdaters/drlm-agent
 
 if [[ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]]; then
 	name=$(cat ${HOME}/go/dr3env.gitname)
@@ -93,18 +101,15 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
 				git fetch upstream && \
 				git flow init -d && \
+#				go mod tidy && \
 				cd
 		else
 			cd ${workdir}/drlm-${repo} && \
 				git fetch upstream && \
+#				go mod tidy && \
 				cd
 		fi
 	done
-	# DRLMv3 deps
-	go get -u github.com/brainupdaters/drlm-common
-	go get -u github.com/brainupdaters/drlm-core
-	go get -u github.com/brainupdaters/drlm-cli
-	go get -u github.com/brainupdaters/drlm-agent
 else
 	echo "Missing github user information! ghuser not provided! no repo autoconfig will be done!"
 fi
