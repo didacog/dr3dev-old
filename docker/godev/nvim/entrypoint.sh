@@ -69,11 +69,6 @@ go get -u google.golang.org/grpc
 go get -u github.com/spf13/cobra/cobra
 go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
-# DRLMv3 deps
-go get -u github.com/brainupdaters/drlm-common
-go get -u github.com/brainupdaters/drlm-core
-go get -u github.com/brainupdaters/drlm-cli
-go get -u github.com/brainupdaters/drlm-agent
 
 if [[ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]]; then
 	name=$(cat ${HOME}/go/dr3env.gitname)
@@ -105,6 +100,11 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 				cd
 		fi
 	done
+	# DRLMv3 deps
+	go get -u github.com/brainupdaters/drlm-common
+	go get -u github.com/brainupdaters/drlm-core
+	go get -u github.com/brainupdaters/drlm-cli
+	go get -u github.com/brainupdaters/drlm-agent
 else
 	echo "Missing github user information! ghuser not provided! no repo autoconfig will be done!"
 fi
