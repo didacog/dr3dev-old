@@ -70,10 +70,9 @@ mytls               latest              c50cce809f39        13 hours ago        
 ### 3. Start the environment.
 
 ```sh
-$ make start-all [ tls=true (default: false) ] [ editor=vscode (default: nvim) ] [ ghuser=<Your_GitHub_Username> (default: not set) ]
+$ make start-all [ tls=true (default: false) ] [ editor=vscode (default: nvim) ] \
+	[ ghuser=didacog (default: not set) ] [ gitname='Didac Oliveira' (default: not set) ] [ gitmail=didac@drlm.org (default: not set) ]
 ```
-
-**Note**: If you plan to use VSCode, you need to execute `make start-backend && make start-godev-vscode ghuser=<Your_GitHub_Username>` instead
 
 ### 4. Happy coding!! ;)
 
@@ -100,47 +99,38 @@ $ code go/src/github.com/<Your_GitHub_Username>
 $ make help
 
 build-all                      Build all docker images
-build-backend                  Builds Backend images with correct UID/GIDs for Development Environment
-build-godev                    Builds Development Environment specified by editor=[nvim|vscode]
-build-godev-nvim               Builds [neovim] Development Environment
-build-godev-vscode             Builds [vscode] Development Environment
-build-net                      Build all required docker networks
-build-tls                      Builds CFSSL image with correct UID/GIDs for Development Environment
 clean-all                      Clean all data - Wipe all data
-clean-backend                  Clean Minio and MariaDb files
-clean-godev                    Clean Golang, Vim plugin and VScode files
 clean-img                      Clean all related docker images
-clean-net                      Clean all related docker networks
-clean-tls                      Clean TLS CA
 start-all                      Start complete Development Environment
-start-backend                  Start Minio and MariaDB services
-start-godev-nvim               Start [neovim] Development Environment
 start-godev                    Start [$editor] Development Environment
-start-godev-vscode             Start [vscode] Development Environment
-start-tls                      Start CFSSL service (TLS)
 status                         Show running containers and it's state
 stop-all                       Stop complete Development Environment
-stop-backend                   Start Minio and MariaDB services
-stop-godev-nvim                Stop [neovim] Development Environment
 stop-godev                     Stop [$editor] Development Environment
-stop-godev-vscode              Stop [vscode] Development Environment
-stop-tls                       Stop CFSSL service (TLS)
 
 Possible Arguments:
 
-ghuser: Setting your GitHub user will automate DRLMv3 GitHub repos setup
-        in-place with upstream remotes, git-flow init, ...
+ghuser:	Setting your GitHub user will automate DRLMv3 GitHub repos setup
+		in-place with upstream remotes, git-flow init, ...
 		Fork of all DRLMv3 repos must be done from your GitHub account in browser.
-	example:
-		make start-all ghuser=didacog
+		example:
+			make start-all ghuser=didacog
 
-tls:    Set to TRUE to enable TLS certificates autogeneration and default TLS config for services.
-	example:
-		make start-all tls=true
+tls:	Set to TRUE to enable TLS certificates autogeneration and default TLS config for services.
+		example:
+			make start-all tls=true
 
-editor: Set the godev image to use: NeoVim or VSCode
-	example:
-		make start-all editor=vscode
+editor:	Set the godev image to use: NeoVim or VSCode
+		example:
+			make start-all editor=vscode
+
+gitname:	Set the global git config user.name settings.
+			example:
+				make start-all gitname='Didac Oliveira'
+
+gitmail:	Set the global git config user.mail settings.
+			example:
+				make start-all gitmail=didac@drlm.org
+
 ```
 
 ## TODO (some pedings ...)
@@ -184,6 +174,8 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Solved build-net error in Makefile
 	* More info in `make status`
 	* Added protobuffers install in entrypoints and other DRLM go tools dependencies like cobra.
+	* Added gitname & gitmail arguments to configure git global name and mail for commit signatures.
+	* Improved Makefile, more simple and with smaller help output.
 	* Work in progres 
 * 0.1.0
 	* Added release history in README.

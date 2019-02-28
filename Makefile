@@ -11,36 +11,36 @@ ifndef tls
 endif
 
 .PHONY: build-godev
-build-godev: build-godev-nvim build-godev-vscode ## Builds Development Environment specified by editor=[nvim|vscode]
+build-godev: build-godev-nvim build-godev-vscode # Builds Development Environment specified by editor=[nvim|vscode]
 
 .PHONY: build-godev-nvim
-build-godev-nvim: ## Builds [neovim] Development Environment 
+build-godev-nvim: # Builds [neovim] Development Environment 
 ifeq ($(editor),nvim)
 	@echo "Building godev [neovim] Environment container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.12 ./docker/godev/nvim/
 endif
 
 .PHONY: build-godev-vscode
-build-godev-vscode: ## Builds [vscode] Development Environment 
+build-godev-vscode: # Builds [vscode] Development Environment 
 ifeq ($(editor),vscode)
 	@echo "Building godev [vscode] Environment container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.12 ./docker/godev/vscode/
 endif
 
 .PHONY: build-backend
-build-backend: ## Builds Backend images with correct UID/GIDs for Development Environment 
+build-backend: # Builds Backend images with correct UID/GIDs for Development Environment 
 	@echo "Building MariaDB container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t mydb:10.3 ./docker/backend/db/
 	@echo "Building Minio container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t myminio:latest ./docker/backend/minio/
 
 .PHONY: build-tls
-build-tls: ## Builds CFSSL image with correct UID/GIDs for Development Environment 
+build-tls: # Builds CFSSL image with correct UID/GIDs for Development Environment 
 	@echo "Building CFSSL container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t mytls:latest ./docker/tls/
 
 .PHONY: build-net
-build-net: ## Build all required docker networks
+build-net: # Build all required docker networks
 	@echo "Setting up dr3env docker network ..."
 	docker network create --attachable dr3env || true
 
@@ -51,7 +51,7 @@ build-all: build-net build-tls build-backend build-godev ## Build all docker ima
 start-godev: start-godev-nvim start-godev-vscode ## Start [$editor] Development Environment 
 
 .PHONY: start-godev-nvim
-start-godev-nvim: ## Start [neovim] Development Environment 
+start-godev-nvim: # Start [neovim] Development Environment 
 ifeq ($(editor),nvim)
 ifeq ($(tls),true)
 	mkdir -vp files/tls/godev
@@ -62,13 +62,20 @@ endif
 ifdef ghuser
 	echo "$(ghuser)" > files/golang/gopath/dr3env.ghuser
 endif
+ifdef gitname
+	echo "$(gitname)" > files/golang/gopath/dr3env.gitname
+endif
+ifdef gitmail
+	echo "$(gitmail)" > files/golang/gopath/dr3env.gitmail
+endif
 	mkdir -vp files/golang/goroot
+	mkdir -vp files/golang/protoc
 	mkdir -vp files/vimplug
 	docker-compose -f docker/godev/nvim/docker-compose.yml run godev
 endif
 
 .PHONY: start-godev-vscode
-start-godev-vscode: ## Start [vscode] Development Environment 
+start-godev-vscode: # Start [vscode] Development Environment 
 ifeq ($(editor),vscode)
 ifeq ($(tls),true)
 	mkdir -vp files/tls/godev
@@ -79,13 +86,20 @@ endif
 ifdef ghuser
 	echo "$(ghuser)" > files/golang/gopath/dr3env.ghuser
 endif
+ifdef gitname
+	echo "$(gitname)" > files/golang/gopath/dr3env.gitname
+endif
+ifdef gitmail
+	echo "$(gitmail)" > files/golang/gopath/dr3env.gitmail
+endif
 	mkdir -vp files/golang/goroot
+	mkdir -vp files/golang/protoc
 	mkdir -vp files/vscode
 	docker-compose -f docker/godev/vscode/docker-compose.yml run godev
 endif
 
 .PHONY: start-tls
-start-tls: ## Start CFSSL service (TLS)
+start-tls: # Start CFSSL service (TLS)
 ifeq ($(tls),true)
 	@echo "Starting CFSSL service ..."
 	mkdir -vp files/tls/ca
@@ -93,7 +107,7 @@ ifeq ($(tls),true)
 endif
 
 .PHONY: stop-tls
-stop-tls: ## Stop CFSSL service (TLS)
+stop-tls: # Stop CFSSL service (TLS)
 	@echo "Stopping CFSSL service ..."
 	docker-compose -f docker/tls/docker-compose.yml down
 
@@ -101,21 +115,21 @@ stop-tls: ## Stop CFSSL service (TLS)
 stop-godev: stop-godev-nvim stop-godev-vscode ## Stop [$editor] Development Environment 
 
 .PHONY: stop-godev-nvim
-stop-godev-nvim: ## Stop [neovim] Development Environment 
+stop-godev-nvim: # Stop [neovim] Development Environment 
 ifeq ($(editor),nvim)
 	@echo "Stopping [neovim] Development Environemnt ..."
 	docker-compose -f docker/godev/nvim/docker-compose.yml stop godev
 endif
 
 .PHONY: stop-godev-vscode
-stop-godev-vscode: ## Stop [vscode] Development Environment 
+stop-godev-vscode: # Stop [vscode] Development Environment 
 ifeq ($(editor),vscode)
 	@echo "Stopping [vscode] Development Environemnt ..."
 	docker-compose -f docker/godev/vscode/docker-compose.yml stop godev
 endif
 
 .PHONY: start-backend
-start-backend: ## Start Minio and MariaDB services
+start-backend: # Start Minio and MariaDB services
 	@echo "Starting Minio and MariaDB ..."
 	mkdir -vp files/db/data
 	mkdir -vp files/minio/data
@@ -129,7 +143,7 @@ else
 endif
 
 .PHONY: stop-backend
-stop-backend: ## Start Minio and MariaDB services
+stop-backend: # Start Minio and MariaDB services
 	@echo "Stopping Minio and MariaDB ..."
 	docker-compose -f docker/backend/dc-simple.yml down
 	docker-compose -f docker/backend/dc-withTLS.yml down
@@ -141,7 +155,7 @@ start-all: start-tls start-backend start-godev ## Start complete Development Env
 stop-all: stop-tls stop-backend stop-godev ## Stop complete Development Environment
 
 .PHONY: clean-godev
-clean-godev: ## Clean Golang, Vim plugin and VScode files
+clean-godev: # Clean Golang, Vim plugin and VScode files
 	@echo "Cleaning up Go dev env (golang and vim plugins) ..."
 	sudo rm -rvf files/golang
 	rm -rvf files/vimplug
@@ -149,14 +163,14 @@ clean-godev: ## Clean Golang, Vim plugin and VScode files
 	rm -rvf files/tls/godev
 
 .PHONY: clean-backend
-clean-backend: ## Clean Minio and MariaDb files
+clean-backend: # Clean Minio and MariaDb files
 	@echo "Cleaning up backend files (minio data and mariadb datafiles) ..."
 	rm -rvf files/db/data
 	rm -rvf files/minio/data
 	rm -rvf files/tls/{mariadb,minio}
 
 .PHONY: clean-tls
-clean-tls: ## Clean TLS CA
+clean-tls: # Clean TLS CA
 	@echo "Cleaning up TLS files (CA) ..."
 	rm -rvf files/tls/ca
 
@@ -171,7 +185,7 @@ clean-img: ## Clean all related docker images
 	docker image prune -f 
 
 .PHONY: clean-net
-clean-net: ## Clean all related docker networks
+clean-net: # Clean all related docker networks
 	@echo "Cleaning up dr3env docker network ..."
 	docker network rm dr3env || true
 
@@ -211,4 +225,12 @@ help:
 	@echo "editor:	Set the godev image to use: NeoVim or VSCode"
 	@echo "	example:"
 	@echo "		make start-all editor=vscode"	
+	@echo ""
+	@echo "gitname:	Set the global git config user.name settings."
+	@echo "	example:"
+	@echo "		make start-all gitname='Didac Oliveira'" 
+	@echo ""
+	@echo "gitmail:	Set the global git config user.mail settings."
+	@echo "	example:"
+	@echo "		make start-all gitmail=didac@drlm.org"	
 

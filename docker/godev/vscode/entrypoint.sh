@@ -26,8 +26,9 @@ if [ ! -x /usr/local/bin/protoc ]; then
 	echo "Installing Protocol buffers ${PROTO_VERSION} ..."
 
 	curl -fLo proto.zip "$url"
-	sudo unzip -d /usr/local proto.zip
+	sudo unzip -d /usr/local/protoc proto.zip
 	rm proto.zip
+	export PATH="/usr/local/protoc/bin:$PATH"
 else
 	echo "Skipping ... Protobuffers already installed!! ;)"
 fi
@@ -59,6 +60,16 @@ go get -u github.com/spf13/cobra/cobra
 go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
 
+if [ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]; then
+	name=$(cat ${HOME}/go/dr3env.gitname)
+	mail=$(cat ${HOME}/go/dr3env.gitmail)
+	echo "[user]" > ${HOME}/.gitconfig
+	echo "name = ${name}" >> ${HOME}/.gitconfig
+	echo "email = ${mail}" >> ${HOME}/.gitconfig
+else
+	echo "Missing ${HOME}/.gitconfig information! gitname & gitmail not provided!" 
+fi
+
 if [ -f ${HOME}/go/dr3env.ghuser ]; then
 	user=$(cat ${HOME}/go/dr3env.ghuser)
 	workdir="${HOME}/go/src/github.com/${user}"
@@ -79,6 +90,8 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 				cd
 		fi
 	done
+else
+	echo "Missing github user information! ghuser not provided! no repo autoconfig will be done!" 
 fi
 
 exec "$@"

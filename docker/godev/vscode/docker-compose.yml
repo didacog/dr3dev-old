@@ -10,6 +10,7 @@ services:
             - DISPLAY=${DISPLAY}
         volumes:
             - ${PWD}/files/golang/goroot:/usr/local/go
+            - ${PWD}/files/golang/protoc:/usr/local/protoc
             - ${PWD}/files/golang/gopath:${HOME}/go
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vscode:${HOME}/.vscode-oss/
