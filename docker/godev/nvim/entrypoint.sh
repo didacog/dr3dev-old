@@ -76,7 +76,7 @@ go get -u github.com/brainupdaters/drlm-core
 go get -u github.com/brainupdaters/drlm-cli
 go get -u github.com/brainupdaters/drlm-common/comms
 go get -u github.com/brainupdaters/drlm-common/logger
-#go get -u github.com/brainupdaters/drlm-agent
+go get -u github.com/brainupdaters/drlm-agent
 
 if [[ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]]; then
 	name=$(cat ${HOME}/go/dr3env.gitname)
@@ -101,12 +101,12 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
 				git fetch upstream && \
 				git flow init -d && \
-#				go mod tidy && \
+				go mod tidy && \
 				cd
 		else
 			cd ${workdir}/drlm-${repo} && \
 				git fetch upstream && \
-#				go mod tidy && \
+				go mod tidy && \
 				cd
 		fi
 	done
