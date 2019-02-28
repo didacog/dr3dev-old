@@ -162,6 +162,8 @@ editor: Set the godev image to use: NeoVim or VSCode
 - Mutual TLS:
 	- Use TLS from client side GORM (https://stackoverflow.com/questions/52962028/how-to-create-ssl-connection-to-mysql-with-gorm)
 	- Use TLS from client side MINIO cli-sdk
+- Move protoc installation under files/golang/protoc and adjust volume mounts.
+- git global config persistence (user.email & user.name)
 - etc.
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
