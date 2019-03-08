@@ -36,10 +36,10 @@ services:
         restart: on-failure
         volumes:
             - ${PWD}/files/db/data:/var/lib/mysql
-            - ${PWD}/files/db/conf:/etc/mysql/conf.d
+            - ${PWD}/files/db/conftls:/etc/mysql/conf.d
             - ${PWD}/files/tls:/tls
         ports:
-            - 3306:3306
+            - "127.0.0.1:33060:3306"
         networks:
             - dr3env
     
@@ -61,7 +61,7 @@ services:
             - ${PWD}/files/minio/data:${HOME}/.minio/data
             - ${PWD}/files/tls/minio:${HOME}/.minio/certs
         ports:
-            - 9443:9443
+            - "127.0.0.1:9443:9443"
         networks:
             - dr3env
         command: server --address ":9443" .minio/data

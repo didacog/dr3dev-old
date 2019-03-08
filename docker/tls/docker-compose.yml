@@ -11,7 +11,7 @@ services:
         volumes:
             - ${PWD}/files/tls:/tls
         ports:
-            - 8888:8888
+            - "127.0.0.1:8888:8888"
               #        network_mode: "bridge"
         networks:
             - dr3env

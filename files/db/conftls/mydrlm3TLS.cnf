@@ -30,6 +30,13 @@ nice            = 0
 
 [mysqld]
 #
+# * TLS
+#
+ssl
+ssl-ca = /tls/ca/ca.pem
+ssl-key = /tls/mariadb/mariadb.key
+ssl-cert = /tls/mariadb/mariadb.crt
+#
 # * Basic Settings
 #
 user            = mysql

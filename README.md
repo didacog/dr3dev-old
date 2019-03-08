@@ -138,12 +138,14 @@ gitmail:	Set the global git config user.mail settings.
 * :ballot_box_with_check: - Create compose file for godev (easy to read what is defined)
 * :ballot_box_with_check: - Configure all containers to run with default docker network bridge for visibility
 * :ballot_box_with_check: - Improve entrypoints for custom init.vim & tmux.conf files. Added .gitignore: 'files/dots/custom/'
+* :ballot_box_with_check: - Move protoc installation under files/golang/protoc and adjust volume mounts.
+* :ballot_box_with_check: - git global config persistence (user.email & user.name)
+* :ballot_box_with_check: - config TLS on all containers to encrypt all service traffic (looking at cfssl)
+* :ballot_box_with_check: - Improve Makefile
 
 - reduce godev image size, now: ~900MB was: 680MB - some vim plugins have to be built in builder stage.
 - Add ssh service to goenv? (check image size!)
-- config TLS on all containers to encrypt all service traffic (looking at cfssl)
 - Are more utils/plugins/extensions needed in godev[-vscode]?? (check image size!)
-- Improve Makefile
 - Add more backend possible configs: HA, TLS, etc.
 - Create drlmv3 build system
 - Documentation and adjustments to work in Windows & Mac OSX systems, possible references:
@@ -152,8 +154,7 @@ gitmail:	Set the global git config user.mail settings.
 - Mutual TLS:
 	- Use TLS from client side GORM (https://stackoverflow.com/questions/52962028/how-to-create-ssl-connection-to-mysql-with-gorm)
 	- Use TLS from client side MINIO cli-sdk
-- Move protoc installation under files/golang/protoc and adjust volume mounts.
-- git global config persistence (user.email & user.name)
+- Modify GRANTS for drlm3 user in mariadb. 
 - etc.
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
@@ -162,6 +163,9 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 
 * 0.1.2
 	* Rollback to Go version 1.11.5 due to strange problems with modules in version 1.12.
+	* Solved host port mapping issues
+	* Solved TLS certs available in all containers
+	* Added mariadb-clients package in godev containers
 	* Work in progres 
 * 0.1.1
 	* Added TLS service with cfssl container to provide TLS certificates to the entire environment.

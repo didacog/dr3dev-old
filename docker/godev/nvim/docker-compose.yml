@@ -13,6 +13,7 @@ services:
             - ${PWD}/files/golang/gopath:${HOME}/go
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vimplug:${HOME}/.vim/plugged 
+            - ${PWD}/files/tls:/tls
 #        ports:
         networks:
             - dr3env

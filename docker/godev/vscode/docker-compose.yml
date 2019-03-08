@@ -15,6 +15,7 @@ services:
             - ${PWD}/files/golang/gopath:${HOME}/go
             - ${PWD}/files/dots:${HOME}/dots
             - ${PWD}/files/vscode:${HOME}/.vscode-oss/
+            - ${PWD}/files/tls:/tls
             - /tmp/.X11-unix:/tmp/.X11-unix
             - /dev/shm:/dev/shm
         networks:
