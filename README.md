@@ -154,7 +154,6 @@ gitmail:	Set the global git config user.mail settings.
 - Mutual TLS:
 	- Use TLS from client side GORM (https://stackoverflow.com/questions/52962028/how-to-create-ssl-connection-to-mysql-with-gorm)
 	- Use TLS from client side MINIO cli-sdk
-- Modify GRANTS for drlm3 user in mariadb. 
 - etc.
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
@@ -166,6 +165,7 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Solved host port mapping issues
 	* Solved TLS certs available in all containers
 	* Added mariadb-clients package in godev containers
+	* Adjusted container name in compose and avoid expose ports to localhost host.
 	* Work in progres 
 * 0.1.1
 	* Added TLS service with cfssl container to provide TLS certificates to the entire environment.
@@ -243,6 +243,8 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 ## Collaborators
 
 * Nefix Estrada - [@NefixEstrada] - nefix@drlm.org
+* Ruben Carbonell - [@krbu] - ruben@drlm.org
+* Pau Roura - [@proura] - pau@drlm.org
 
 ## License
 

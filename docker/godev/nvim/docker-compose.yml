@@ -6,6 +6,7 @@ services:
         # The DRLMv3 development environment with:
         # tmux - nvim - git - gitflow 
         image: godev:1.11.5
+        container_name: godev
 #        environment:
         volumes:
             - ${PWD}/files/golang/goroot:/usr/local/go

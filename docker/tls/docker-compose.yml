@@ -6,12 +6,13 @@ services:
         # cfssl CA server
         # 
         image: mytls:latest
+        container_name: tls
 #        environment:
         restart: on-failure
         volumes:
             - ${PWD}/files/tls:/tls
         ports:
-            - "127.0.0.1:8888:8888"
+            - "8888:8888"
               #        network_mode: "bridge"
         networks:
             - dr3env

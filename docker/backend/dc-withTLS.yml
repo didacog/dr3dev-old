@@ -28,6 +28,7 @@ services:
         # at cfssl to get all required certs automatically.
 
         image: mydb:10.3
+        container_name: mariadb
         environment:
             MYSQL_ROOT_PASSWORD: drlm3db
             MYSQL_DATABASE: drlm3
@@ -39,7 +40,7 @@ services:
             - ${PWD}/files/db/conftls:/etc/mysql/conf.d
             - ${PWD}/files/tls:/tls
         ports:
-            - "127.0.0.1:33060:3306"
+            - "33060:3306"
         networks:
             - dr3env
     
@@ -53,6 +54,7 @@ services:
         # Certificate autogeneration (cfssl??)
 
         image: myminio:latest
+        container_name: minio
         environment:
             MINIO_ACCESS_KEY: drlm3minio
             MINIO_SECRET_KEY: drlm3minio
@@ -61,7 +63,7 @@ services:
             - ${PWD}/files/minio/data:${HOME}/.minio/data
             - ${PWD}/files/tls/minio:${HOME}/.minio/certs
         ports:
-            - "127.0.0.1:9443:9443"
+            - "9443:9443"
         networks:
             - dr3env
         command: server --address ":9443" .minio/data
