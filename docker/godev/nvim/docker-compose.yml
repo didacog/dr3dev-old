@@ -17,10 +17,10 @@ services:
             - ${PWD}/files/tls:/tls
 #        ports:
         networks:
-            - dr3env
+            - dr3dev
 #        command: bash -c "tmux new -s DRLMv3_DevEnv 'nvim go'"
         command: bash 
 
 networks:
-    dr3env:
+    dr3dev:
         external: true

@@ -8,3 +8,4 @@ files/tls/minio/*
 files/tls/ca/*
 files/tls/mariadb/*
 files/tls/godev/*
+files/node/*

@@ -29,6 +29,8 @@ services:
 
         image: mydb:10.3
         container_name: mariadb
+        hostname: mariadb
+        domainname: dr3dev.local
         environment:
             MYSQL_ROOT_PASSWORD: drlm3db
             MYSQL_DATABASE: drlm3
@@ -42,7 +44,7 @@ services:
         ports:
             - "33060:3306"
         networks:
-            - dr3env
+            - dr3dev
     
     minio:
         # The minio config.json setting DRLMv3 options for dev/test/prod purposes
@@ -55,6 +57,8 @@ services:
 
         image: myminio:latest
         container_name: minio
+        hostname: minio
+        domainname: dr3dev.local
         environment:
             MINIO_ACCESS_KEY: drlm3minio
             MINIO_SECRET_KEY: drlm3minio
@@ -65,10 +69,10 @@ services:
         ports:
             - "9443:9443"
         networks:
-            - dr3env
+            - dr3dev
         command: server --address ":9443" .minio/data
 
 
 networks:
-    dr3env:
+    dr3dev:
         external: true

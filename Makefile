@@ -3,7 +3,7 @@
 
 #arg := $(word 3, $(MAKECMDGOALS) )
 ifndef editor
-	editor = nvim
+	editor = all
 endif
 
 ifndef tls
@@ -11,7 +11,7 @@ ifndef tls
 endif
 
 .PHONY: build-godev
-build-godev: build-godev-nvim build-godev-vscode # Builds Development Environment specified by editor=[nvim|vscode]
+build-godev: build-godev-nvim build-godev-vscode build-godev-all # Builds Development Environment specified by editor=[nvim|vscode]
 
 .PHONY: build-godev-nvim
 build-godev-nvim: # Builds [neovim] Development Environment 
@@ -25,6 +25,13 @@ build-godev-vscode: # Builds [vscode] Development Environment
 ifeq ($(editor),vscode)
 	@echo "Building godev [vscode] Environment container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.11.5 ./docker/godev/vscode/
+endif
+
+.PHONY: build-godev-all
+build-godev-all: # Builds [complete] Development Environment 
+ifeq ($(editor),all)
+	@echo "Building godev [complete] Environment container image ..."
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-all:1.11.5 ./docker/godev/
 endif
 
 .PHONY: build-backend
@@ -41,14 +48,14 @@ build-tls: # Builds CFSSL image with correct UID/GIDs for Development Environmen
 
 .PHONY: build-net
 build-net: # Build all required docker networks
-	@echo "Setting up dr3env docker network ..."
-	docker network create --attachable dr3env || true
+	@echo "Setting up dr3dev docker network ..."
+	docker network create --attachable dr3dev || true
 
 .PHONY: build-all
 build-all: build-net build-tls build-backend build-godev ## Build all docker images 
 
 .PHONY: start-godev
-start-godev: start-godev-nvim start-godev-vscode ## Start [$editor] Development Environment 
+start-godev: start-godev-nvim start-godev-vscode start-godev-all ## Start [$editor] Development Environment 
 
 .PHONY: start-godev-nvim
 start-godev-nvim: # Start [neovim] Development Environment 
@@ -98,6 +105,32 @@ endif
 	docker-compose -f docker/godev/vscode/docker-compose.yml run godev
 endif
 
+.PHONY: start-godev-all
+start-godev-all: # Start [complete] Development Environment 
+ifeq ($(editor),all)
+ifeq ($(tls),true)
+	mkdir -vp files/tls/godev
+	files/tls/sh/gencert.sh godev
+endif
+	@echo "Starting [complete] Development Environemnt ..."
+	mkdir -vp files/golang/gopath
+ifdef ghuser
+	echo "$(ghuser)" > files/golang/gopath/dr3env.ghuser
+endif
+ifdef gitname
+	echo "$(gitname)" > files/golang/gopath/dr3env.gitname
+endif
+ifdef gitmail
+	echo "$(gitmail)" > files/golang/gopath/dr3env.gitmail
+endif
+	mkdir -vp files/golang/goroot
+	mkdir -vp files/golang/protoc
+	mkdir -vp files/vimplug
+	mkdir -vp files/vscode
+	mkdir -vp files/node
+	docker-compose -f docker/godev/docker-compose.yml run godev
+endif
+
 .PHONY: start-tls
 start-tls: # Start CFSSL service (TLS)
 ifeq ($(tls),true)
@@ -112,7 +145,7 @@ stop-tls: # Stop CFSSL service (TLS)
 	docker-compose -f docker/tls/docker-compose.yml down
 
 .PHONY: stop-godev
-stop-godev: stop-godev-nvim stop-godev-vscode ## Stop [$editor] Development Environment 
+stop-godev: stop-godev-nvim stop-godev-vscode stop-godev-all ## Stop [$editor] Development Environment 
 
 .PHONY: stop-godev-nvim
 stop-godev-nvim: # Stop [neovim] Development Environment 
@@ -126,6 +159,13 @@ stop-godev-vscode: # Stop [vscode] Development Environment
 ifeq ($(editor),vscode)
 	@echo "Stopping [vscode] Development Environemnt ..."
 	docker-compose -f docker/godev/vscode/docker-compose.yml stop godev
+endif
+
+.PHONY: stop-godev-all
+stop-godev-all: # Stop [complete] Development Environment 
+ifeq ($(editor),all)
+	@echo "Stopping [complete] Development Environemnt ..."
+	docker-compose -f docker/godev/docker-compose.yml stop godev
 endif
 
 .PHONY: start-backend
@@ -160,6 +200,7 @@ clean-godev: # Clean Golang, Vim plugin and VScode files
 	sudo rm -rvf files/golang
 	rm -rvf files/vimplug
 	rm -rvf files/vscode
+	rm -rvf files/node
 	rm -rvf files/tls/godev
 
 .PHONY: clean-backend
@@ -178,6 +219,7 @@ clean-tls: # Clean TLS CA
 clean-img: ## Clean all related docker images
 	@echo "Cleaning up all docker images (godev, minio & mariadb) ..."
 	docker image rm godev:1.11.5 -f
+	docker image rm godev-all:1.11.5 -f
 	docker image rm godev-vscode:1.11.5 -f
 	docker image rm myminio:latest -f
 	docker image rm mydb:10.3 -f
@@ -186,23 +228,23 @@ clean-img: ## Clean all related docker images
 
 .PHONY: clean-net
 clean-net: # Clean all related docker networks
-	@echo "Cleaning up dr3env docker network ..."
-	docker network rm dr3env || true
+	@echo "Cleaning up dr3dev docker network ..."
+	docker network rm dr3dev || true
 
 .PHONY: clean-all
 clean-all: stop-all clean-godev clean-backend clean-tls clean-img clean-net ## Clean all data - Wipe all data
 
 .PHONY: status
 status: ## Show running containers and it's state
-	@echo "-- dr3env - Defined Networks: ---------------------------"
+	@echo "-- dr3dev - Defined Networks: ---------------------------"
 	@echo ""
-	@docker network ls -f name=dr3env
+	@docker network ls -f name=dr3dev
 	@echo ""
-	@echo "-- dr3env - Built Images: -------------------------------"
+	@echo "-- dr3dev - Built Images: -------------------------------"
 	@echo ""
 	@docker image ls 
 	@echo ""
-	@echo "-- dr3env - Running Containers: -------------------------"
+	@echo "-- dr3dev - Running Containers: -------------------------"
 	@echo ""
 	@docker ps
 
@@ -222,7 +264,7 @@ help:
 	@echo "	example:"
 	@echo "		make start-all tls=true"	
 	@echo ""
-	@echo "editor:	Set the godev image to use: NeoVim or VSCode"
+	@echo "editor:	Set the godev image to use: NeoVim or VSCode (default: all)"
 	@echo "	example:"
 	@echo "		make start-all editor=vscode"	
 	@echo ""

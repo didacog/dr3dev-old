@@ -58,12 +58,12 @@ export QT_DEVICE_PIXEL_RATIO=2
 
 # Golang env vars
 export GOPATH=$HOME/go
-#export GO111MODULE=on 
+export GO111MODULE=on 
 
 # NPM for global packages non-root
-PATH="$HOME/.node_modules/bin:$PATH"
+export PATH="$HOME/.node_modules/bin:$PATH"
 export npm_config_prefix=~/.node_modules
 
 # Set PATH
-export PATH=$PATH:/usr/local/go/bin:$HOME/.local/bin:$GOPATH/bin
-
+#export PATH=$HOME/.node_modules/bin:/usr/local/go/bin:$HOME/.local/bin:$GOPATH/bin
+export PATH=$HOME/.node_modules/bin:$HOME/go/bin:/usr/local/go/bin:/usr/local/protoc/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/local/busybox/bin

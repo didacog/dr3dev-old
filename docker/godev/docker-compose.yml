@@ -4,9 +4,11 @@ services:
 
     godev:
         # The DRLMv3 development environment with:
-        # tmux - nvim - vscode - git - gitflow 
-        image: godev-vscode:1.11.5
+        # tmux - nvim - git - gitflow-avh - vscode 
+        image: godev-all:1.11.5
         container_name: godev
+        hostname: godev
+        domainname: dr3dev.local
         environment:
             - DISPLAY=${DISPLAY}
         ipc: host
@@ -15,16 +17,18 @@ services:
             - ${PWD}/files/golang/protoc:/usr/local/protoc
             - ${PWD}/files/golang/gopath:${HOME}/go
             - ${PWD}/files/dots:${HOME}/dots
+            - ${PWD}/files/vimplug:${HOME}/.vim/plugged 
             - ${PWD}/files/vscode:${HOME}/.vscode-oss/
+            - ${PWD}/files/node:${HOME}/.node_modules
             - ${PWD}/files/tls:/tls
             - /tmp/.X11-unix:/tmp/.X11-unix
             - /dev/shm:/dev/shm
+#        ports:
         networks:
             - dr3dev
-#        ports:
-#        command: code ${HOME}/go
+#        command: bash -c "tmux new -s DRLMv3_DevEnv 'nvim go'"
+        command: bash 
 
 networks:
     dr3dev:
         external: true
-

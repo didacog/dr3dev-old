@@ -7,6 +7,8 @@ services:
         # 
         image: mytls:latest
         container_name: tls
+        hostname: tls
+        domainname: dr3dev.local
 #        environment:
         restart: on-failure
         volumes:
@@ -15,9 +17,9 @@ services:
             - "8888:8888"
               #        network_mode: "bridge"
         networks:
-            - dr3env
+            - dr3dev
 
 networks:
-    dr3env:
+    dr3dev:
         external: true
 
