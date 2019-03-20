@@ -55,7 +55,8 @@ echo "#####################"
 if [ -f "$HOME"/dots/custom/init.vim ]; then
 	mkdir -p ${HOME}/.config/nvim; ln -s ${HOME}/dots/custom/init.vim ${HOME}/.config/nvim/init.vim
 else
-	[ -f "$HOME"/dots/init.vim ] && mkdir -p ${HOME}/.config/nvim; ln -s ${HOME}/dots/init.vim ${HOME}/.config/nvim/init.vim
+	[ -f "$HOME"/dots/nvim/init.vim ] && mkdir -p ${HOME}/.config/nvim; ln -s ${HOME}/dots/nvim/init.vim ${HOME}/.config/nvim/init.vim
+	[ -f "$HOME"/dots/nvim/coc-settings.json ] && ln -s ${HOME}/dots/nvim/coc-settings.json ${HOME}/.config/nvim/coc-settings.json
 fi
 
 if [ -f "$HOME"/dots/custom/tmux.conf ]; then
@@ -113,7 +114,9 @@ echo "#####################"
 # Install bash language server
 export npm_config_prefix=${HOME}/.node_modules
 npm i -g bash-language-server
-go get -v -u github.com/sourcegraph/go-langserver
+# DEPRECATED go get -v -u github.com/sourcegraph/go-langserver
+# Keep checking for official google go langserver in progress
+go get -v -u github.com/saibing/bingo
 
 echo "#####################"
 echo "######## Installing/Updating DRLMv3 Go deps ..."
@@ -124,11 +127,10 @@ go get -v github.com/spf13/cobra/cobra
 go get -v github.com/Sirupsen/logrus
 go get -v github.com/golang/protobuf/protoc-gen-go
 ## drlm upstream libs
-go get -v github.com/brainupdaters/drlm-core
-go get -v github.com/brainupdaters/drlm-cli
-go get -v github.com/brainupdaters/drlm-common/comms
-go get -v github.com/brainupdaters/drlm-common/logger
-go get -v github.com/brainupdaters/drlm-agent
+#go get -v -u github.com/brainupdaters/drlm-core
+#go get -v -u github.com/brainupdaters/drlm-cli
+#go get -v -u github.com/brainupdaters/drlm-common
+#go get -v -u github.com/brainupdaters/drlm-agent
 
 echo "#####################"
 echo "######## Setting up Git/GitFlow & drlm v3 repos ..."
@@ -144,17 +146,23 @@ else
 	echo "Missing ${HOME}/.gitconfig information! gitname & gitmail not provided!"
 fi
 
+
 if [ -f ${HOME}/go/dr3env.ghuser ]; then
 	user=$(cat ${HOME}/go/dr3env.ghuser)
-	workdir="${HOME}/go/src/github.com/${user}"
+# 	workdir="${HOME}/go/src/github.com/${user}"
+	workdir="${HOME}/go/src/github.com/brainupdaters"
 	mkdir -vp ${workdir}
 	for repo in common cli agent core
 	do
 		if [ ! -d ${workdir}/drlm-${repo}/.git ]; then
-			git clone https://github.com/${user}/drlm-${repo} ${workdir}/drlm-${repo} && \
+			git clone https://github.com/brainupdaters/drlm-${repo} ${workdir}/drlm-${repo} && \
 				cd ${workdir}/drlm-${repo} && \
 				git config url."https://${user}@github.com".InsteadOf "https://github.com" && \
-				git remote add upstream https://github.com/brainupdaters/drlm-${repo} && \
+				git checkout -b master && \
+				git checkout develop && \
+				git remote add fork https://github.com/${user}/drlm-${repo} && \
+				git remote rename origin upstream && \
+				git remote rename fork origin && \
 				git fetch upstream && \
 				git flow init -d -p 'feature/' -b 'bugfix/' -r 'release/' -x 'hotfix/' -s 'support/' && \
 				GO111MODULE=on go mod tidy && \
@@ -170,6 +178,6 @@ else
 	echo "Missing github user information! ghuser not provided! no repo autoconfig will be done!"
 fi
 
-cd "$HOME"
+cd "$HOME"/go/src/github.com/brainupdaters
 
 exec "$@"

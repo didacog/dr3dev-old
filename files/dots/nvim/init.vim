@@ -13,19 +13,11 @@ set background=dark
 
 " Auto plugin update and 1st time install plugin manager Vim Plug
 
-"if has('nvim')
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
   silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
 	\  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
   autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
-"else
-"  if empty(glob('~/.vim/autoload/plug.vim'))
-"    silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-"	\  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-"    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-"  endif
-"endif
 
 "autocmd vimenter * NERDTree
 
@@ -52,25 +44,25 @@ Plug 'tpope/vim-fugitive'
 " git glutter vim
 Plug 'airblade/vim-gitgutter'
 " Language Server Client
-Plug 'autozimu/LanguageClient-neovim', {
-    \ 'branch': 'next',
-    \ 'do': 'bash install.sh',
-    \ }
+"Plug 'autozimu/LanguageClient-neovim', {
+"    \ 'branch': 'next',
+"    \ 'do': 'bash install.sh',
+"    \ }
 " (Optional) Multi-entry selection UI.
-Plug 'junegunn/fzf'
+"Plug 'junegunn/fzf'
 " vim-go plugin
 Plug 'fatih/vim-go'
 "Plug 'fatih/vim-go', { 'do': ':GoInstallBinaries' }
 " deoplete autocompletion
-if has('nvim')
-  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
-else
-  Plug 'Shougo/deoplete.nvim'
-  Plug 'roxma/nvim-yarp'
-  Plug 'roxma/vim-hug-neovim-rpc'
-endif
+"if has('nvim')
+"  Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+"else
+"  Plug 'Shougo/deoplete.nvim'
+"  Plug 'roxma/nvim-yarp'
+"  Plug 'roxma/vim-hug-neovim-rpc'
+"endif
 " Deoplete GO
-Plug 'zchee/deoplete-go', { 'do': 'make' }
+"Plug 'zchee/deoplete-go', { 'do': 'make' }
 " Neomake
 Plug 'neomake/neomake'
 " Bash support
@@ -85,8 +77,12 @@ Plug 'scrooloose/nerdtree'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 " NERDtree syntax hghlght
 Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
+" NERDCommenter plugin
+Plug 'scrooloose/nerdcommenter'
 " Vim Devicons plugin
 Plug 'ryanoasis/vim-devicons'
+" coc.nvim
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': 'yarn install'}
 call plug#end()
 
 " enable syntax
@@ -116,7 +112,7 @@ set lazyredraw
 " Disable show mode under statusline
 set noshowmode
 " highlight cursor
-"set cursorline
+set cursorline
 "set cursorcolumn
 " Enable Tab line when more than one
 set showtabline=1
@@ -137,7 +133,7 @@ set nowritebackup
 " set character encoding to UTF-8
 set encoding=utf-8
 " show 10 lines above or below cursor when scrolling
-set scrolloff=5
+set scrolloff=10
 " show insert, replace, or visual mode in last line
 "set showmode
 " show command in last line
@@ -157,8 +153,8 @@ set shiftwidth=4
 set noexpandtab 
 " enable auto indentation
 set autoindent
-" show spaces and tabs; to turn off for copying, use `:set nolist`
-set list
+" not show spaces and tabs; to turn on, use `:set list`
+set nolist
 set listchars=tab:→\ ,space:·,trail:·,extends:»,precedes:«,nbsp:⣿
 " switch off search pattern highlighting
 set hlsearch
@@ -174,7 +170,13 @@ set backspace=indent,eol,start
 " hide buffers, not close them
 set hidden
 " decrease updatetime 
-"set updatetime=100
+set updatetime=300
+" Better display for messages
+set cmdheight=2
+" don't give |ins-completion-menu| messages.
+set shortmess+=c
+" always show signcolumns
+set signcolumn=yes
 " Theming
 if &term =~ '256color'
 	" disable Background Color Erase (BCE) so that color schemes
@@ -195,9 +197,7 @@ let &t_ZH="\e[3m"
 let &t_ZR="\e[23m"
 " colorscheme
 let g:gruvbox_italic=1
-if !(empty(glob('~/.vim/plugged/gruvbox')))
-	colorscheme gruvbox
-endif
+colorscheme gruvbox
 " term
 "set term=xterm-256color
 set t_Co=256
@@ -213,7 +213,7 @@ set t_Co=256
 let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
-      \             [ 'gitbranch', 'readonly', 'filename' ] ]
+      \             [ 'cocstatus', 'gitbranch', 'readonly', 'filename' ] ]
       \ },
       \ 'component_function': {
       \   'mode': 'lightline#mode',
@@ -221,6 +221,7 @@ let g:lightline = {
       \   'filename': 'LightLineFilename',
       \   'filetype': 'MyFiletype',
       \   'fileformat': 'MyFileformat',
+      \   'cocstatus': 'coc#status',
       \ },
       \ 'component_expand': {
       \   'table_mode': 'LightlineTableModeModifier',
@@ -301,7 +302,7 @@ let g:NERDTreeHighlightFolders = 1 " folder icon highlighting using exact match
 let g:NERDTreeHighlightFoldersFullName = 1 " highlights the folder name
 "let g:NERDTreeDisablePatternMatchHighlight = 1
 "let g:NERDTreeLimitedSyntax = 1
-"let g:NERDTreeSyntaxEnabledExtensions = ['json', 'js', 'sh', 'go', 'php', 'html', 'js', 'css', 'markdown', 'md', 'rst', 'vim', 'sql', 'yaml', 'yml', 'py', 'pl', 'conf', 'config' ]
+let g:NERDTreeSyntaxEnabledExtensions = ['json', 'js', 'sh', 'go', 'php', 'html', 'js', 'css', 'markdown', 'md', 'rst', 'vim', 'sql', 'yaml', 'yml', 'py', 'pl', 'conf', 'config' ]
 let NERDTreeShowHidden=1
 let g:NERDTreeFileExtensionHighlightFullName = 1
 let g:NERDTreeExactMatchHighlightFullName = 1
@@ -383,27 +384,34 @@ let g:gitgutter_diff_args = '-w'
 autocmd FileType go setlocal shiftwidth=4 tabstop=4 softtabstop=4 noexpandtab
 " vim-go
 "
+let g:go_highlight_build_constraints = 1
+let g:go_highlight_extra_types = 1
+let g:go_highlight_types = 1
+let g:go_highlight_fields = 1
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
 let g:go_highlight_operators = 1
-let g:go_highlight_build_constraints = 1
 let g:go_fold_enable = ['block', 'import', 'varconst', 'package_comment', 'comment']
-let g:go_def_mapping_enabled = 0
+let g:go_def_mode = 'guru'
+"let g:go_def_mapping_enabled = 0
 let g:go_fmt_command = 'goimports'
-let g:go_fmt_fail_silently = 1
+"let g:go_fmt_fail_silently = 1
 let g:go_term_enabled = 1
+let g:go_auto_sameids = 1
+let g:go_auto_type_info = 1
+
 " Deoplete 
 " 
-set completeopt=longest,menuone " auto complete setting
-let g:deoplete#enable_at_startup = 1
-let g:deoplete#enable_smart_case = 1
-let g:deoplete#auto_complete_start_length = 1
-let g:deoplete#keyword_patterns = {}
-let g:deoplete#keyword_patterns['default'] = '\h\w*'
-let g:deoplete#omni#input_patterns = {}
-let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
-let g:deoplete#sources#go#align_class = 1
+"set completeopt=longest,menuone " auto complete setting
+"let g:deoplete#enable_at_startup = 1
+"let g:deoplete#enable_smart_case = 1
+"let g:deoplete#auto_complete_start_length = 1
+"let g:deoplete#keyword_patterns = {}
+"let g:deoplete#keyword_patterns['default'] = '\h\w*'
+"let g:deoplete#omni#input_patterns = {}
+"let g:deoplete#sources#go#sort_class = ['package', 'func', 'type', 'var', 'const']
+"let g:deoplete#sources#go#align_class = 1
 
 " neomake
 "
@@ -437,9 +445,10 @@ let g:neomake_go_gometalinter_maker = {
   \ }
 
 " Language server client
-let g:LanguageClient_serverCommands = {
-	\ 'go': ['/home/didacog/go/bin/go-langserver'],
-    \ }
+"let g:LanguageClient_serverCommands = {
+"	\ 'go': ['go-langserver'],
+"	\ 'sh': ['bash-language-server', 'start']
+"    \ }
 "    \ 'javascript': ['/usr/local/bin/javascript-typescript-stdio'],
 "    \ 'javascript.jsx': ['tcp://127.0.0.1:2089'],
 "    \ 'python': ['/usr/local/bin/pyls'],
@@ -448,3 +457,96 @@ let g:LanguageClient_serverCommands = {
 "if exists("g:loaded_webdevicons")
 "  call webdevicons#refresh()
 "endif
+
+""""" coc.nvim config
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> for trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
+
+" Use <cr> for confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
+" Use `[c` and `]c` for navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K for show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if &filetype == 'vim'
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType typescript,json,go,sh setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+vmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` for format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` for fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+" Using CocList
+" Show all diagnostics
+nnoremap <silent> <space>a  :<C-u>CocList diagnostics<cr>
+" Manage extensions
+nnoremap <silent> <space>e  :<C-u>CocList extensions<cr>
+" Show commands
+nnoremap <silent> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document
+nnoremap <silent> <space>o  :<C-u>CocList outline<cr>
+" Search workspace symbols
+nnoremap <silent> <space>s  :<C-u>CocList -I symbols<cr>
+" Do default action for next item.
+nnoremap <silent> <space>j  :<C-u>CocNext<CR>
+" Do default action for previous item.
+nnoremap <silent> <space>k  :<C-u>CocPrev<CR>
+" Resume latest coc list
+nnoremap <silent> <space>p  :<C-u>CocListResume<CR>

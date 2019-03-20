@@ -4,5 +4,20 @@
     "telemetry.enableTelemetry": false,
     "terminal.integrated.rendererType": "dom",
 	"terminal.integrated.shell.linux": "/usr/bin/bash",
-	"terminal.integrated.shellArgs.linux": ["-l"]
+    "terminal.integrated.shellArgs.linux": [
+        "-l"
+    ],
+    "go.useLanguageServer": true,
+	"go.alternateTools": {
+        "go-langserver": "bingo"
+    },
+    "go.languageServerFlags": [
+        "-enhance-signature-help",
+        "-trace",
+        "-format-style=goimports"
+    ],
+    "go.languageServerExperimentalFeatures": {
+        "format": true,
+        "autoComplete": true
+    }
 }
