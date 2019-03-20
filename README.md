@@ -160,6 +160,11 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 
 ## Changelog - Release History 
 
+* 0.1.3
+	* Defined new GitHub workflow to avoid Go imports issues
+	* Added godev-all single image with all editors (1.86 GB in size)
+	* Added bingo (go langserver) and bash langserver to help developing 
+	* replaced deoplete with coc.nvim
 * 0.1.2
 	* Rollback to Go version 1.11.5 due to strange problems with modules in version 1.12.
 	* Solved host port mapping issues
