@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 certname=$1  
 
