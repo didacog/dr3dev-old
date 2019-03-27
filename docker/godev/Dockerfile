@@ -19,11 +19,11 @@ LABEL maintainer Didac Oliveira "didac@drlm.org"
 # Install software
 COPY --from=builder /build/*/*.pkg.tar.xz /tmp
 
-RUN --mount=type=bind,from=builder,source=/var/cache/pacman,target=/var/cache/pacman --mount=type=bind,from=builder,source=/var/lib/pacman/sync,target=/var/lib/pacman/sync \
-#	pacman -Sy && \
+#RUN --mount=type=bind,from=builder,source=/var/cache/pacman,target=/var/cache/pacman --mount=type=bind,from=builder,source=/var/lib/pacman/sync,target=/var/lib/pacman/sync \
+RUN pacman -Syy && \
 	pacman --needed --noconfirm -S sudo git bash-completion neovim python python-neovim npm yarn code otf-fira-code tmux mariadb-clients busybox \
 	#pacman --needed --noconfirm -S make sudo git bash-completion tar neovim python python-neovim npm yarn code otf-fira-code tmux unzip mariadb-clients busybox \
-	binutils file findutils make sed gawk gcc util-linux grep && \
+	binutils file findutils make sed gawk gcc util-linux grep unzip && \
 	#autoconf automake binutils bison fakeroot file findutils flex gawk gcc gettext grep groff gzip libtool m4 make patch pkgconf sed texinfo util-linux which && \
 	#pacman --noconfirm -U /tmp/yay.pkg.tar.xz && \
 	pacman --noconfirm -U /tmp/gitflow-avh.pkg.tar.xz && \

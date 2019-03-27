@@ -81,10 +81,10 @@ if [ ! -d "$HOME"/.vim/plugged/vim-go ]; then
 	echo "#####################"
 # Install Vim Plugins + vim-go binaries
 #curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-	nvim --headless +qall 
-	nvim --headless +PlugInstall +qall 
-	nvim --headless +PlugInstall +UpdateRemotePlugins +qall 
-	nvim --headless +GoInstallBinaries +qall
+	nvim --headless +qa 
+	nvim --headless +PlugInstall +qa 
+	nvim --headless "+CocInstall coc-json" +qa 
+	nvim --headless +GoInstallBinaries +qa
 else
 	echo "#####################"
 	echo "######## Skipping ... NeoVim plugins already installed!!! ;)"
@@ -122,10 +122,10 @@ echo "#####################"
 echo "######## Installing/Updating DRLMv3 Go deps ..."
 echo "#####################"
 
-go get -v google.golang.org/grpc
-go get -v github.com/spf13/cobra/cobra
-go get -v github.com/Sirupsen/logrus
-go get -v github.com/golang/protobuf/protoc-gen-go
+#go get -v google.golang.org/grpc
+#go get -v github.com/spf13/cobra/cobra
+#go get -v github.com/Sirupsen/logrus
+#go get -v github.com/golang/protobuf/protoc-gen-go
 ## drlm upstream libs
 #go get -v -u github.com/brainupdaters/drlm-core
 #go get -v -u github.com/brainupdaters/drlm-cli

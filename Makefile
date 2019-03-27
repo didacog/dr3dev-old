@@ -7,7 +7,7 @@ ifndef editor
 endif
 
 ifndef tls
-	tls = false
+	tls = true
 endif
 
 .PHONY: build-godev
@@ -225,6 +225,7 @@ clean-img: ## Clean all related docker images
 	docker image rm mydb:10.3 -f
 	docker image rm mytls:latest -f
 	docker image prune -f 
+	docker image rm $(docker image ls | grep none | awk '{print $3}' | xargs) -f
 
 .PHONY: clean-net
 clean-net: # Clean all related docker networks

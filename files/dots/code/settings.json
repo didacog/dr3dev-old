@@ -7,17 +7,22 @@
     "terminal.integrated.shellArgs.linux": [
         "-l"
     ],
-    "go.useLanguageServer": true,
+    "go.useLanguageServer": false,
 	"go.alternateTools": {
         "go-langserver": "bingo"
     },
     "go.languageServerFlags": [
         "-enhance-signature-help",
         "-trace",
-        "-format-style=goimports"
+        "-format-style=goimports",
+        "--diagnostics-style=instant",
+        "--cache-style=none"
     ],
     "go.languageServerExperimentalFeatures": {
         "format": true,
         "autoComplete": true
-    }
+    },
+    "go.docsTool": "guru",
+    "go.lintTool": "gometalinter",
+    "go.autocompleteUnimportedPackages": true
 }
