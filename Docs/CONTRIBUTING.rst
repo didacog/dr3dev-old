@@ -12,7 +12,7 @@ First of all you need to Fork DRLMv3 repos with your GitHub account.
 Here the required repos you must fork from:
 
    * github.com/brainupdaters/drlm-core
-   * github.com/brainupdaters/drlm-cli
+   * github.com/brainupdaters/drlmctl
    * github.com/brainupdaters/drlm-common
    * github.com/brainupdaters/drlm-agent
 
@@ -28,17 +28,17 @@ Quick start summary (You must have pre-required software in place, see link abov
 
    3. Start the development environment (1st time will take a while, enjoying coffe? ;))
    ``make start-all ghuser=<Github_User> gitname='Name Surname' gitmail='your@email.net'``
-   Only 1st time you run ``make start-all`` all arguments are required to do a proper auto-setup 
-   of git, git-flow, etc. The following times no arguments are required and will be fast.  
+   Only 1st time you run ``make start-all`` all arguments are required to do a proper auto-setup
+   of git, git-flow, etc. The following times no arguments are required and will be fast.
 
-   4. Here you are in a container shell (godev). 
+   4. Here you are in a container shell (godev).
    ``cd go/src/github.com/brainupdaters``
-   Use ``code`` or ``nvim`` to develop, are pre-configured with the required plugins to work with. 
+   Use ``code`` or ``nvim`` to develop, are pre-configured with the required plugins to work with.
 
    5. To stop development session. Exit you container shell after saving your work and run:
    ``make stop-all``
-   Your work is safe in files directory of the repo. While you do not remove the repo folder or run 
-   ``make clean-all`` you will be able to continue developing with saved data from last session ;).  
+   Your work is safe in files directory of the repo. While you do not remove the repo folder or run
+   ``make clean-all`` you will be able to continue developing with saved data from last session ;).
 
    5. Happy coding! ;)
 
@@ -56,7 +56,7 @@ Bug reports are submited through `GitHub Issues <https://guides.github.com/featu
 * Specify which version of DRLM you're using
 * Specify which OS you're using (both the server and the client)
 
- 
+
 F ixing a bug
 ````````````
 If you want to fix a bug, you have to follow this steps:
@@ -69,7 +69,7 @@ If you want to fix a bug, you have to follow this steps:
 
    Read the Contributing instructions above.
 
-   **Note**: Git and GitFlow setup is done automatically if followed the previous `instructions <https://github.com/didacog/dr3dev/blob/master/Docs/CONTRIBUTING.rst#how-can-i-contribute>`_. 
+   **Note**: Git and GitFlow setup is done automatically if followed the previous `instructions <https://github.com/didacog/dr3dev/blob/master/Docs/CONTRIBUTING.rst#how-can-i-contribute>`_.
 
 3. **Create the new branch**
 
@@ -90,13 +90,13 @@ If you want to fix a bug, you have to follow this steps:
 
    After publishing the branch, go to the `Brain Updaters DRLMv3 repositories <https://github.com/brainupdaters>`_ and make a new Pull Request from your ``feature/<feature-name>`` branch of your fork to the ``develop`` branch. Don't worry, we'll change your Pull Request to the correct branch. You might need to click ``compare between forks``.
 
-   **Note**: in case you face merge conficts, you'll need to `Update your fork`_ and resolve the conficts locally. 
+   **Note**: in case you face merge conficts, you'll need to `Update your fork`_ and resolve the conficts locally.
    **Note**: in case you commit changes after executing ``git flow hotfix publish``, you'll need to execute ``git push`` in order to upload your latest changes to the Pull Request
 
 6. **Cleanup**
 
    After the Pull Request is merged, remember to remove the branch in your local repository and in the GitHub.
-   
+
    To delete the local branch, you need to execute:
    ``git checkout develop && git branch -d feature/<feature-name>``
 
@@ -105,16 +105,16 @@ If you want to fix a bug, you have to follow this steps:
    Or do it directly through the command line:
 
    ``git push --delete feature/<feature-name>``
- 
+
 Suggesting new features or enhancements
 ```````````````````````````````````````
 Suggestions are submited through `GitHub Issues <https://guides.github.com/features/issues/>`_.
 
-* Use a clear and descriptive title 
+* Use a clear and descriptive title
 * Explain with detail the feature/enhancements
 * Explain why the feature/enhancements would benefit the DRLM users
 
- 
+
 Adding a new functionality
 ``````````````````````````
 If you want to add new functionality, you have to follow this steps:
@@ -127,7 +127,7 @@ If you want to add new functionality, you have to follow this steps:
 
    Read the Contributing instructions above.
 
-   **Note**: Git and GitFlow setup is done automatically if followed the `instructions <https://github.com/didacog/dr3dev/blob/master/Docs/CONTRIBUTING.rst#how-can-i-contribute>`_. 
+   **Note**: Git and GitFlow setup is done automatically if followed the `instructions <https://github.com/didacog/dr3dev/blob/master/Docs/CONTRIBUTING.rst#how-can-i-contribute>`_.
 
 4. **Create the new branch**
 
@@ -154,7 +154,7 @@ If you want to add new functionality, you have to follow this steps:
 7. **Cleanup**
 
    After the Pull Request is merged, remember to remove the branch in your local repository and in the GitHub.
-   
+
    To delete the local branch, you need to execute:
    ``git checkout develop && git branch -d feature/<feature-name>``
 
@@ -164,20 +164,20 @@ If you want to add new functionality, you have to follow this steps:
 
    ``git push --delete feature/<feature-name>``
 
-  
+
 Style guidelines
 ----------------
 
 Git Flow
 ````````
-DRLM follows a `Git Flow <https://danielkummer.github.io/git-flow-cheatsheet>`_ workflow. 
+DRLM follows a `Git Flow <https://danielkummer.github.io/git-flow-cheatsheet>`_ workflow.
 
- 
+
 Semantic Versioning
 ```````````````````
 DRLM uses `Semantic Versioning <https://semver.org>`_
 
- 
+
 Other
 -----
 

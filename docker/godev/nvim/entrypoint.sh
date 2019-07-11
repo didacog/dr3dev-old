@@ -7,20 +7,20 @@ set -e
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
 	GOLANG_VERSION=1.11.5
-	ARCH=amd64 
+	ARCH=amd64
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
-	echo "Installing Golang ${GOLANG_VERSION} ..." 
+	echo "Installing Golang ${GOLANG_VERSION} ..."
 
 	#set -eux
-	curl -fLo go.tgz "$url" 
+	curl -fLo go.tgz "$url"
 	#echo "${goRelSha256} *go.tgz" | sha256sum -c - && \
-	sudo tar -C /usr/local -xzf go.tgz 
+	sudo tar -C /usr/local -xzf go.tgz
 	rm go.tgz
 	export PATH="/usr/local/go/bin:$PATH"
 
 else
-	echo "Skipping ... Go already installed!! ;)" 
+	echo "Skipping ... Go already installed!! ;)"
 fi
 
 if [ ! -x /usr/local/protoc/bin/protoc ]; then
@@ -29,13 +29,13 @@ if [ ! -x /usr/local/protoc/bin/protoc ]; then
 	ARCH=x86_64
 	url="https://github.com/protocolbuffers/protobuf/releases/download/v${PROTO_VERSION}/protoc-${PROTO_VERSION}-linux-${ARCH}.zip"
 
-	echo "Installing Protocol buffers ${PROTO_VERSION} ..." 
-	curl -fLo proto.zip "$url" 
+	echo "Installing Protocol buffers ${PROTO_VERSION} ..."
+	curl -fLo proto.zip "$url"
 	sudo unzip -d /usr/local/protoc proto.zip
 	rm proto.zip
 	export PATH="/usr/local/protoc/bin:$PATH"
 else
-	echo "Skipping ... Protobuffers already installed!! ;)" 
+	echo "Skipping ... Protobuffers already installed!! ;)"
 fi
 
 if [ -f "$HOME"/dots/custom/init.vim ]; then
@@ -51,8 +51,8 @@ else
 fi
 
 [ -f "$HOME"/dots/bash/bashrc ] && ln -sf ${HOME}/dots/bash/bashrc ${HOME}/.bashrc
-[ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
-[ -f "$HOME"/dots/bash/inputrc ] &&  ln -sf ${HOME}/dots/bash/inputrc ${HOME}/.inputrc; 
+[ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile;
+[ -f "$HOME"/dots/bash/inputrc ] &&  ln -sf ${HOME}/dots/bash/inputrc ${HOME}/.inputrc;
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash
 
 touch ${HOME}/.bash_history
@@ -61,9 +61,9 @@ touch ${HOME}/.bash_history
 
 # Install Vim Plugins + vim-go binaries
 #curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-nvim --headless +qall 
-nvim --headless +PlugInstall +qall 
-nvim --headless +PlugInstall +UpdateRemotePlugins +qall 
+nvim --headless +qall
+nvim --headless +PlugInstall +qall
+nvim --headless +PlugInstall +UpdateRemotePlugins +qall
 nvim --headless +GoInstallBinaries +qall
 
 go get -u github.com/sourcegraph/go-langserver
@@ -73,7 +73,7 @@ go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
 
 go get -u github.com/brainupdaters/drlm-core
-go get -u github.com/brainupdaters/drlm-cli
+go get -u github.com/brainupdaters/drlmctl
 go get -u github.com/brainupdaters/drlm-common/comms
 go get -u github.com/brainupdaters/drlm-common/logger
 go get -u github.com/brainupdaters/drlm-agent

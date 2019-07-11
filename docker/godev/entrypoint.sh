@@ -7,23 +7,23 @@ set -e
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
 	GOLANG_VERSION=1.11.5
-	ARCH=amd64 
+	ARCH=amd64
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
 	echo "#####################"
-	echo "######## Installing Golang ${GOLANG_VERSION} ..." 
+	echo "######## Installing Golang ${GOLANG_VERSION} ..."
 	echo "#####################"
 
 	#set -eux
-	curl -fLo go.tgz "$url" 
+	curl -fLo go.tgz "$url"
 	#echo "${goRelSha256} *go.tgz" | sha256sum -c - && \
-	sudo tar -C /usr/local -xzf go.tgz 
+	sudo tar -C /usr/local -xzf go.tgz
 	rm go.tgz
 	export PATH="/usr/local/go/bin:$PATH"
 
 else
 	echo "#####################"
-	echo "######## Skipping ... Go already installed!! ;)" 
+	echo "######## Skipping ... Go already installed!! ;)"
 	echo "#####################"
 fi
 
@@ -34,16 +34,16 @@ if [ ! -x /usr/local/protoc/bin/protoc ]; then
 	url="https://github.com/protocolbuffers/protobuf/releases/download/v${PROTO_VERSION}/protoc-${PROTO_VERSION}-linux-${ARCH}.zip"
 
 	echo "#####################"
-	echo "Installing Protocol buffers ${PROTO_VERSION} ..." 
+	echo "Installing Protocol buffers ${PROTO_VERSION} ..."
 	echo "#####################"
 
-	curl -fLo proto.zip "$url" 
+	curl -fLo proto.zip "$url"
 	sudo unzip -d /usr/local/protoc proto.zip
 	rm proto.zip
 	export PATH="/usr/local/protoc/bin:$PATH"
 else
 	echo "#####################"
-	echo "######## Skipping ... Protobuffers already installed!! ;)" 
+	echo "######## Skipping ... Protobuffers already installed!! ;)"
 	echo "#####################"
 fi
 
@@ -66,8 +66,8 @@ else
 fi
 
 [ -f "$HOME"/dots/bash/bashrc ] && ln -sf ${HOME}/dots/bash/bashrc ${HOME}/.bashrc
-[ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
-[ -f "$HOME"/dots/bash/inputrc ] &&  ln -sf ${HOME}/dots/bash/inputrc ${HOME}/.inputrc; 
+[ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile;
+[ -f "$HOME"/dots/bash/inputrc ] &&  ln -sf ${HOME}/dots/bash/inputrc ${HOME}/.inputrc;
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash
 [ -f "$HOME"/dots/code/settings.json ] && mkdir -p "${HOME}/.config/Code - OSS/User" && ln -sf ${HOME}/dots/code/settings.json "${HOME}/.config/Code - OSS/User/settings.json"
 
@@ -81,9 +81,9 @@ if [ ! -d "$HOME"/.vim/plugged/vim-go ]; then
 	echo "#####################"
 # Install Vim Plugins + vim-go binaries
 #curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-	nvim --headless +qa 
-	nvim --headless +PlugInstall +qa 
-	nvim --headless "+CocInstall coc-json" +qa 
+	nvim --headless +qa
+	nvim --headless +PlugInstall +qa
+	nvim --headless "+CocInstall coc-json" +qa
 	nvim --headless +GoInstallBinaries +qa
 else
 	echo "#####################"
@@ -128,7 +128,7 @@ echo "#####################"
 #go get -v github.com/golang/protobuf/protoc-gen-go
 ## drlm upstream libs
 #go get -v -u github.com/brainupdaters/drlm-core
-#go get -v -u github.com/brainupdaters/drlm-cli
+#go get -v -u github.com/brainupdaters/drlmctl
 #go get -v -u github.com/brainupdaters/drlm-common
 #go get -v -u github.com/brainupdaters/drlm-agent
 
@@ -152,15 +152,15 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 # 	workdir="${HOME}/go/src/github.com/${user}"
 	workdir="${HOME}/go/src/github.com/brainupdaters"
 	mkdir -vp ${workdir}
-	for repo in common cli agent core
+	for repo in drlm-common drlmctl drlm-agent drlm-core
 	do
-		if [ ! -d ${workdir}/drlm-${repo}/.git ]; then
-			git clone https://github.com/brainupdaters/drlm-${repo} ${workdir}/drlm-${repo} && \
-				cd ${workdir}/drlm-${repo} && \
+		if [ ! -d ${workdir}/${repo}/.git ]; then
+			git clone https://github.com/brainupdaters/${repo} ${workdir}/${repo} && \
+				cd ${workdir}/${repo} && \
 				git config url."https://${user}@github.com".InsteadOf "https://github.com" && \
 				git checkout -b master && \
 				git checkout develop && \
-				git remote add fork https://github.com/${user}/drlm-${repo} && \
+				git remote add fork https://github.com/${user}/${repo} && \
 				git remote rename origin upstream && \
 				git remote rename fork origin && \
 				git fetch upstream && \
@@ -168,7 +168,7 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 				GO111MODULE=on go mod tidy && \
 				cd
 		else
-			cd ${workdir}/drlm-${repo} && \
+			cd ${workdir}/${repo} && \
 				git fetch upstream && \
 				GO111MODULE=on go mod tidy && \
 				cd
