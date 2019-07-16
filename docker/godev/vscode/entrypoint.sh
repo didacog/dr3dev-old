@@ -4,17 +4,17 @@ set -e
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
 	GOLANG_VERSION=1.11.5
-	ARCH=amd64 
+	ARCH=amd64
 	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
 
 	echo "Installing Golang version ${GOLANG_VERSION} ..."
 
-	curl -fLo go.tgz "$url" 
-	sudo tar -C /usr/local -xzf go.tgz 
+	curl -fLo go.tgz "$url"
+	sudo tar -C /usr/local -xzf go.tgz
 	rm go.tgz
 	export PATH="/usr/local/go/bin:$PATH"
 else
-	echo "Skipping ... Go already installed!! ;)" 
+	echo "Skipping ... Go already installed!! ;)"
 fi
 
 if [ ! -x /usr/local/protoc/bin/protoc ]; then
@@ -40,7 +40,7 @@ else
 fi
 
 [ -f "$HOME"/dots/bash/bashrc ] && ln -sf ${HOME}/dots/bash/bashrc ${HOME}/.bashrc
-[ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile; 
+[ -f "$HOME"/dots/bash/bash_profile ] &&  ln -sf ${HOME}/dots/bash/bash_profile ${HOME}/.bash_profile;
 [ -f "$HOME"/dots/bash/inputrc ] &&  ln -sf ${HOME}/dots/bash/inputrc ${HOME}/.inputrc;
 [ -d "$HOME"/dots/bash ] && ln -sf ${HOME}/dots/bash ${HOME}/.bash;
 [ -f "$HOME"/dots/code/settings.json ] && mkdir -p "${HOME}/.config/Code - OSS/User" && ln -sf ${HOME}/dots/code/settings.json "${HOME}/.config/Code - OSS/User/settings.json"
@@ -61,7 +61,7 @@ go get -u github.com/Sirupsen/logrus
 go get -u github.com/golang/protobuf/protoc-gen-go
 
 go get -u github.com/brainupdaters/drlm-core
-go get -u github.com/brainupdaters/drlm-cli
+go get -u github.com/brainupdaters/drlmctl
 go get -u github.com/brainupdaters/drlm-common/comms
 go get -u github.com/brainupdaters/drlm-common/logger
 go get -u github.com/brainupdaters/drlm-agent
@@ -73,7 +73,7 @@ if [[ -f ${HOME}/go/dr3env.gitname && -f ${HOME}/go/dr3env.gitmail ]]; then
 	echo "name = ${name}" >> ${HOME}/.gitconfig
 	echo "email = ${mail}" >> ${HOME}/.gitconfig
 else
-	echo "Missing ${HOME}/.gitconfig information! gitname & gitmail not provided!" 
+	echo "Missing ${HOME}/.gitconfig information! gitname & gitmail not provided!"
 fi
 
 if [ -f ${HOME}/go/dr3env.ghuser ]; then
@@ -99,7 +99,7 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 		fi
 	done
 else
-	echo "Missing github user information! ghuser not provided! no repo autoconfig will be done!" 
+	echo "Missing github user information! ghuser not provided! no repo autoconfig will be done!"
 fi
 
 exec "$@"
