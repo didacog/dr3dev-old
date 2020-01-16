@@ -1,8 +1,16 @@
 #!/bin/bash
 set -e
 
-#if [ "$1" = 'bash' ]; then
-#fi
+echo "#####################"
+echo "######## Starting the SSH daemon..."
+echo "#####################"
+
+sudo ssh-keygen -A
+echo "HostKey /etc/ssh/ssh_host_rsa_key
+HostKey /etc/ssh/ssh_host_dsa_key
+HostKey /etc/ssh/ssh_host_ecdsa_key
+HostKey /etc/ssh/ssh_host_ed25519_key" | sudo tee -a /etc/ssh/sshd_config
+nohup sudo /usr/sbin/sshd -D -e -f /etc/ssh/sshd_config&
 
 if [ ! -x /usr/local/go/bin/go ]; then
 	# Install Golang
@@ -118,11 +126,10 @@ npm i -g bash-language-server
 # Keep checking for official google go langserver in progress
 go get -v -u github.com/saibing/bingo
 
-echo "#####################"
-echo "######## Installing/Updating DRLMv3 Go deps ..."
-echo "#####################"
+# echo "#####################"
+# echo "######## Installing/Updating DRLMv3 Go deps ..."
+# echo "#####################"
 
-#go get -v google.golang.org/grpc
 #go get -v github.com/spf13/cobra/cobra
 #go get -v github.com/Sirupsen/logrus
 #go get -v github.com/golang/protobuf/protoc-gen-go
@@ -152,7 +159,7 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 # 	workdir="${HOME}/go/src/github.com/${user}"
 	workdir="${HOME}/go/src/github.com/brainupdaters"
 	mkdir -vp ${workdir}
-	for repo in drlm-common drlmctl drlm-agent drlm-core
+	for repo in drlm-common drlmctl drlm-agent drlm-core drlm-testing
 	do
 		if [ ! -d ${workdir}/${repo}/.git ]; then
 			git clone https://github.com/brainupdaters/${repo} ${workdir}/${repo} && \

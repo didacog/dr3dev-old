@@ -4,7 +4,7 @@ services:
 
     godev:
         # The DRLMv3 development environment with:
-        # tmux - nvim - vscode - git - gitflow 
+        # tmux - nvim - vscode - git - gitflow
         image: godev-vscode:1.11.5
         container_name: godev
         environment:
@@ -19,6 +19,7 @@ services:
             - ${PWD}/files/tls:/tls
             - /tmp/.X11-unix:/tmp/.X11-unix
             - /dev/shm:/dev/shm
+            - /var/run/docker.sock:/var/run/docker.sock
         networks:
             - dr3dev
 #        ports:

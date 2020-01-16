@@ -80,7 +80,7 @@ if [ -f ${HOME}/go/dr3env.ghuser ]; then
 	user=$(cat ${HOME}/go/dr3env.ghuser)
 	workdir="${HOME}/go/src/github.com/${user}"
 	mkdir -vp ${workdir}
-	for repo in common cli agent core
+	for repo in common cli agent core testing
 	do
 		if [ ! -d ${workdir}/drlm-${repo}/.git ]; then
 			git clone https://github.com/${user}/drlm-${repo} ${workdir}/drlm-${repo} && \

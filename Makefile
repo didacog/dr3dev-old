@@ -14,35 +14,35 @@ endif
 build-godev: build-godev-nvim build-godev-vscode build-godev-all # Builds Development Environment specified by editor=[nvim|vscode]
 
 .PHONY: build-godev-nvim
-build-godev-nvim: # Builds [neovim] Development Environment 
+build-godev-nvim: # Builds [neovim] Development Environment
 ifeq ($(editor),nvim)
 	@echo "Building godev [neovim] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev:1.11.5 ./docker/godev/nvim/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) --build-arg DOCKERGID=$(shell cat /etc/group | grep docker | cut -d: -f3) --build-arg DR3DEV=$(PWD) -t godev:1.11.5 ./docker/godev/nvim/
 endif
 
 .PHONY: build-godev-vscode
-build-godev-vscode: # Builds [vscode] Development Environment 
+build-godev-vscode: # Builds [vscode] Development Environment
 ifeq ($(editor),vscode)
 	@echo "Building godev [vscode] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-vscode:1.11.5 ./docker/godev/vscode/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) --build-arg DOCKERGID=$(shell cat /etc/group | grep docker | cut -d: -f3) --build-arg DR3DEV=$(PWD) -t godev-vscode:1.11.5 ./docker/godev/vscode/
 endif
 
 .PHONY: build-godev-all
-build-godev-all: # Builds [complete] Development Environment 
+build-godev-all: # Builds [complete] Development Environment
 ifeq ($(editor),all)
 	@echo "Building godev [complete] Environment container image ..."
-	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t godev-all:1.11.5 ./docker/godev/
+	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) --build-arg DOCKERGID=$(shell cat /etc/group | grep docker | cut -d: -f3) --build-arg DR3DEV=$(PWD) -t godev-all:1.11.5 ./docker/godev/
 endif
 
 .PHONY: build-backend
-build-backend: # Builds Backend images with correct UID/GIDs for Development Environment 
+build-backend: # Builds Backend images with correct UID/GIDs for Development Environment
 	@echo "Building MariaDB container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t mydb:10.3 ./docker/backend/db/
 	@echo "Building Minio container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUSER=$(shell id -un) --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t myminio:latest ./docker/backend/minio/
 
 .PHONY: build-tls
-build-tls: # Builds CFSSL image with correct UID/GIDs for Development Environment 
+build-tls: # Builds CFSSL image with correct UID/GIDs for Development Environment
 	@echo "Building CFSSL container image ..."
 	DOCKER_BUILDKIT=1 docker build --build-arg MYUID=$(shell id -u) --build-arg MYGID=$(shell id -g) -t mytls:latest ./docker/tls/
 
@@ -52,13 +52,13 @@ build-net: # Build all required docker networks
 	docker network create --attachable dr3dev || true
 
 .PHONY: build-all
-build-all: build-net build-tls build-backend build-godev ## Build all docker images 
+build-all: build-net build-tls build-backend build-godev ## Build all docker images
 
 .PHONY: start-godev
-start-godev: start-godev-nvim start-godev-vscode start-godev-all ## Start [$editor] Development Environment 
+start-godev: start-godev-nvim start-godev-vscode start-godev-all ## Start [$editor] Development Environment
 
 .PHONY: start-godev-nvim
-start-godev-nvim: # Start [neovim] Development Environment 
+start-godev-nvim: # Start [neovim] Development Environment
 ifeq ($(editor),nvim)
 ifeq ($(tls),true)
 	mkdir -vp files/tls/godev
@@ -82,7 +82,7 @@ endif
 endif
 
 .PHONY: start-godev-vscode
-start-godev-vscode: # Start [vscode] Development Environment 
+start-godev-vscode: # Start [vscode] Development Environment
 ifeq ($(editor),vscode)
 ifeq ($(tls),true)
 	mkdir -vp files/tls/godev
@@ -106,7 +106,7 @@ endif
 endif
 
 .PHONY: start-godev-all
-start-godev-all: # Start [complete] Development Environment 
+start-godev-all: # Start [complete] Development Environment
 ifeq ($(editor),all)
 ifeq ($(tls),true)
 	mkdir -vp files/tls/godev
@@ -145,24 +145,24 @@ stop-tls: # Stop CFSSL service (TLS)
 	docker-compose -f docker/tls/docker-compose.yml down
 
 .PHONY: stop-godev
-stop-godev: stop-godev-nvim stop-godev-vscode stop-godev-all ## Stop [$editor] Development Environment 
+stop-godev: stop-godev-nvim stop-godev-vscode stop-godev-all ## Stop [$editor] Development Environment
 
 .PHONY: stop-godev-nvim
-stop-godev-nvim: # Stop [neovim] Development Environment 
+stop-godev-nvim: # Stop [neovim] Development Environment
 ifeq ($(editor),nvim)
 	@echo "Stopping [neovim] Development Environemnt ..."
 	docker-compose -f docker/godev/nvim/docker-compose.yml stop godev
 endif
 
 .PHONY: stop-godev-vscode
-stop-godev-vscode: # Stop [vscode] Development Environment 
+stop-godev-vscode: # Stop [vscode] Development Environment
 ifeq ($(editor),vscode)
 	@echo "Stopping [vscode] Development Environemnt ..."
 	docker-compose -f docker/godev/vscode/docker-compose.yml stop godev
 endif
 
 .PHONY: stop-godev-all
-stop-godev-all: # Stop [complete] Development Environment 
+stop-godev-all: # Stop [complete] Development Environment
 ifeq ($(editor),all)
 	@echo "Stopping [complete] Development Environemnt ..."
 	docker-compose -f docker/godev/docker-compose.yml stop godev
@@ -224,7 +224,7 @@ clean-img: ## Clean all related docker images
 	docker image rm myminio:latest -f
 	docker image rm mydb:10.3 -f
 	docker image rm mytls:latest -f
-	docker image prune -f 
+	docker image prune -f
 	docker image rm $(docker image ls | grep none | awk '{print $3}' | xargs) -f
 
 .PHONY: clean-net
@@ -243,7 +243,7 @@ status: ## Show running containers and it's state
 	@echo ""
 	@echo "-- dr3dev - Built Images: -------------------------------"
 	@echo ""
-	@docker image ls 
+	@docker image ls
 	@echo ""
 	@echo "-- dr3dev - Running Containers: -------------------------"
 	@echo ""
@@ -259,21 +259,21 @@ help:
 	@echo "	in-place with upstream remotes, git-flow init, ..."
 	@echo "	Fork of all DRLMv3 repos must be done from your GitHub account in browser."
 	@echo "	example:"
-	@echo "		make start-all ghuser=didacog"	
+	@echo "		make start-all ghuser=didacog"
 	@echo ""
 	@echo "tls:	Set to TRUE to enable TLS certificates autogeneration and default TLS config for services."
 	@echo "	example:"
-	@echo "		make start-all tls=true"	
+	@echo "		make start-all tls=true"
 	@echo ""
 	@echo "editor:	Set the godev image to use: NeoVim or VSCode (default: all)"
 	@echo "	example:"
-	@echo "		make start-all editor=vscode"	
+	@echo "		make start-all editor=vscode"
 	@echo ""
 	@echo "gitname:	Set the global git config user.name settings."
 	@echo "	example:"
-	@echo "		make start-all gitname='Didac Oliveira'" 
+	@echo "		make start-all gitname='Didac Oliveira'"
 	@echo ""
 	@echo "gitmail:	Set the global git config user.mail settings."
 	@echo "	example:"
-	@echo "		make start-all gitmail=didac@drlm.org"	
+	@echo "		make start-all gitmail=didac@drlm.org"
 
