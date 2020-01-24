@@ -69,9 +69,30 @@ RUN	groupadd --gid ${MYGID} ${MYUSER} && \
 	chmod 0440 /etc/sudoers.d/${MYUSER} && \
 	mkdir -p "$GOPATH/src" "$GOPATH/bin" && chown -R ${MYUSER}:${MYUSER} "$GOPATH"
 
-COPY entrypoint.sh /usr/local/bin/
-
 USER ${MYUSER}
 WORKDIR /home/${MYUSER}
+
+# Install Golang
+ARG GOLANG_VERSION=1.13.6
+ARG GOLANG_ARCH=amd64
+RUN curl -fLo go.tar.gz "https://golang.org/dl/go${GOLANG_VERSION}.linux-${GOLANG_ARCH}.tar.gz" && \
+		sudo tar -C /usr/local -xzf go.tar.gz && \
+		rm go.tar.gz
+
+ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
+
+# Install Protocol Buffers
+ARG PROTOBUF_VERSION=3.11.2
+ARG PROTOBUF_ARCH=x86_64
+RUN curl -fLo protobuf.zip "https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protoc-${PROTOBUF_VERSION}-linux-${PROTOBUF_ARCH}.zip" && \
+		sudo unzip -d /usr/local/protoc protobuf.zip && \
+		sudo chmod -R +r /usr/local/protoc/include/ && \
+		rm protobuf.zip  && \
+		go get -v github.com/golang/protobuf/protoc-gen-go
+
+ENV PATH=$PATH:/usr/local/protoc/bin
+
+COPY entrypoint.sh /usr/local/bin/
 ENTRYPOINT [ "entrypoint.sh" ]
+
 CMD [ "bash" ]

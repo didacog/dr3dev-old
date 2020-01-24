@@ -12,50 +12,6 @@ HostKey /etc/ssh/ssh_host_ecdsa_key
 HostKey /etc/ssh/ssh_host_ed25519_key" | sudo tee -a /etc/ssh/sshd_config
 nohup sudo /usr/sbin/sshd -D -e -f /etc/ssh/sshd_config&
 
-if [ ! -x /usr/local/go/bin/go ]; then
-	# Install Golang
-	GOLANG_VERSION=1.11.5
-	ARCH=amd64
-	url="https://golang.org/dl/go${GOLANG_VERSION}.linux-${ARCH}.tar.gz"
-
-	echo "#####################"
-	echo "######## Installing Golang ${GOLANG_VERSION} ..."
-	echo "#####################"
-
-	#set -eux
-	curl -fLo go.tgz "$url"
-	#echo "${goRelSha256} *go.tgz" | sha256sum -c - && \
-	sudo tar -C /usr/local -xzf go.tgz
-	rm go.tgz
-	export PATH="/usr/local/go/bin:$PATH"
-
-else
-	echo "#####################"
-	echo "######## Skipping ... Go already installed!! ;)"
-	echo "#####################"
-fi
-
-if [ ! -x /usr/local/protoc/bin/protoc ]; then
-	# Install Protobuffers
-	PROTO_VERSION=3.6.1
-	ARCH=x86_64
-	url="https://github.com/protocolbuffers/protobuf/releases/download/v${PROTO_VERSION}/protoc-${PROTO_VERSION}-linux-${ARCH}.zip"
-
-	echo "#####################"
-	echo "Installing Protocol buffers ${PROTO_VERSION} ..."
-	echo "#####################"
-
-	curl -fLo proto.zip "$url"
-	sudo unzip -d /usr/local/protoc proto.zip
-	rm proto.zip
-	export PATH="/usr/local/protoc/bin:$PATH"
-else
-	echo "#####################"
-	echo "######## Skipping ... Protobuffers already installed!! ;)"
-	echo "#####################"
-fi
-
-
 echo "#####################"
 echo "######## Setting up dotfiles ..."
 echo "#####################"
@@ -132,7 +88,6 @@ go get -v -u github.com/saibing/bingo
 
 #go get -v github.com/spf13/cobra/cobra
 #go get -v github.com/Sirupsen/logrus
-#go get -v github.com/golang/protobuf/protoc-gen-go
 ## drlm upstream libs
 #go get -v -u github.com/brainupdaters/drlm-core
 #go get -v -u github.com/brainupdaters/drlmctl
