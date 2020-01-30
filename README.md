@@ -1,5 +1,7 @@
 # dr3dev - DRLMv3 Development, Testing &amp; Build Tool 
 
+# DEPRECATED. THIS REPOSITORY IS DEPRECATED. TO TO THE OFFICIAL [DR3DEV](https://github.com/brainupdaters/dr3dev) REPOSITORY
+
 This is a complete development environment to start contributing to the DRLMv3 FOSS Project.
 
 Is pretended to be useful for people wanting to contribute to the DRLMv3 Project. With this tool
