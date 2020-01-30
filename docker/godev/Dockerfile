@@ -73,7 +73,7 @@ USER ${MYUSER}
 WORKDIR /home/${MYUSER}
 
 # Install Golang
-ARG GOLANG_VERSION=1.13.6
+ARG GOLANG_VERSION
 ARG GOLANG_ARCH=amd64
 RUN curl -fLo go.tar.gz "https://golang.org/dl/go${GOLANG_VERSION}.linux-${GOLANG_ARCH}.tar.gz" && \
 		sudo tar -C /usr/local -xzf go.tar.gz && \
@@ -82,8 +82,8 @@ RUN curl -fLo go.tar.gz "https://golang.org/dl/go${GOLANG_VERSION}.linux-${GOLAN
 ENV PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
 # Install Protocol Buffers
-ARG PROTOBUF_VERSION=3.11.2
-ARG PROTOBUF_ARCH=x86_64
+ARG PROTOBUF_VERSION
+ARG PROTOBUF_ARCH
 RUN curl -fLo protobuf.zip "https://github.com/protocolbuffers/protobuf/releases/download/v${PROTOBUF_VERSION}/protoc-${PROTOBUF_VERSION}-linux-${PROTOBUF_ARCH}.zip" && \
 		sudo unzip -d /usr/local/protoc protobuf.zip && \
 		sudo chmod -R +r /usr/local/protoc/include/ && \

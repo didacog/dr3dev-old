@@ -1,4 +1,4 @@
-# dr3dev - DRLMv3 Development, Testing &amp; Build Tool 
+# dr3dev - DRLMv3 Development, Testing &amp; Build Tool
 
 This is a complete development environment to start contributing to the DRLMv3 FOSS Project.
 
@@ -7,7 +7,7 @@ will be easy to start having a complete environment for development and testing.
 
 Future will be also used to build DRLMv3, for use in workshops, test different configurations, etc.
 
-This tool is still in it's early days and will change fast, please report any issues or ideas to 
+This tool is still in it's early days and will change fast, please report any issues or ideas to
 improve it.
 
 Could be useful also for anyone interested in start developing in Golang.
@@ -50,48 +50,16 @@ $ git clone https://github.com/didacog/dr3dev && cd dr3dev
 ### 2. Build the environment.
 
 ```sh
-$ make build-all [ editor=vscode (default: nvim) ]
-```
-
-**Note**: If you plan to use VSCode as editor, you'll need to execute `make build-godev-vscode` too.
-
-This is a list of all available images possible:
-
-```sh
-$ docker image ls
-REPOSITORY          TAG                 IMAGE ID            CREATED              SIZE
-godev-vscode        1.11.5              92f50864dc00        9 seconds ago        1.31GB
-godev               1.11.5              e1202457d23a        About a minute ago   917MB
-myminio             latest              d3ed40bcfee8        21 hours ago         54.3MB
-mydb                10.3                5b376274dd85        21 hours ago         368MB
-mytls               latest              c50cce809f39        13 hours ago        68.1MB
+$ make build
 ```
 
 ### 3. Start the environment.
 
 ```sh
-$ make start-all [ tls=true (default: false) ] [ editor=vscode (default: nvim) ] [ ghuser=didacog (default: not set) ] \
-	[ gitname='Didac Oliveira' (default: not set) ] [ gitmail=didac@drlm.org (default: not set) ]
+$ make start [ ghuser=didacog (default: not set) ] [ gitname='Didac Oliveira' (default: not set) ] [ gitmail=didac@drlm.org (default: not set) ] [ offline=true (default: not set) ]
 ```
 
 ### 4. Happy coding!! ;)
-
-#### godev (nvim)
-
-This image starts with tmux session and open the editor (nvim) in first window. [Ctrl+a c] to open new terminal window inside tmux.
-
-```sh
-$ nvim go/src/github.com/<Your_GitHub_Username>
-```
-#### godev-vscode
-
-This image starts with a bash terminal. You can start tmux if needed and launching code opens new X-window having the editor and terminal available.
-
-```sh
-$ code go/src/github.com/<Your_GitHub_Username>
-```
-
-**Note**: In order to have required Go binaries for vscode-go extension to work. In the Code editor window do: [ Ctrl+Shift+P ] 'Go: Install/Update Tools'
 
 ## List all available options
 
@@ -158,12 +126,12 @@ gitmail:	Set the global git config user.mail settings.
 
 Please if you have ideas to improve this please open an issue, PR, ... We can discuss about it and see how to implement it.
 
-## Changelog - Release History 
+## Changelog - Release History
 
 * 0.1.3
 	* Defined new GitHub workflow to avoid Go imports issues
 	* Added godev-all single image with all editors (1.86 GB in size)
-	* Added bingo (go langserver) and bash langserver to help developing 
+	* Added bingo (go langserver) and bash langserver to help developing
 	* replaced deoplete with coc.nvim
 * 0.1.2
 	* Rollback to Go version 1.11.5 due to strange problems with modules in version 1.12.
@@ -171,7 +139,7 @@ Please if you have ideas to improve this please open an issue, PR, ... We can di
 	* Solved TLS certs available in all containers
 	* Added mariadb-clients package in godev containers
 	* Adjusted container name in compose and avoid expose ports to localhost host.
-	* Work in progres 
+	* Work in progres
 * 0.1.1
 	* Added TLS service with cfssl container to provide TLS certificates to the entire environment.
 	* Automated git clone, gitflow init of all drlm3 repos. Use arg ghuser="YourGitHubUser" in make [start-godev|start-godev-vscode].

@@ -3,9 +3,7 @@ version: '3.7'
 services:
 
     godev:
-        # The DRLMv3 development environment with:
-        # tmux - nvim - git - gitflow-avh - vscode
-        image: godev-all:1.11.5
+        image: dr3dev-godev:${GOLANG_VERSION}
         container_name: godev
         hostname: godev
         domainname: dr3dev.local
@@ -22,10 +20,8 @@ services:
             - /tmp/.X11-unix:/tmp/.X11-unix
             - /dev/shm:/dev/shm
             - /var/run/docker.sock:/var/run/docker.sock
-#        ports:
         networks:
             - dr3dev
-#        command: bash -c "tmux new -s DRLMv3_DevEnv 'nvim go'"
         command: bash
 
 networks:

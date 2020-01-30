@@ -39,60 +39,48 @@ touch ${HOME}/.bash_history
 
 #export GO111MODULE=on
 
-if [ ! -d "$HOME"/.vim/plugged/vim-go ]; then
+if [ ! -f "$HOME/go/offline" ]; then
+	if [ ! -d "$HOME"/.vim/plugged/vim-go ]; then
+		echo "#####################"
+		echo "######## Installing NeoVim plugins ..."
+		echo "#####################"
+	# Install Vim Plugins + vim-go binaries
+	#curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+		nvim --headless +qa
+		nvim --headless +PlugInstall +qa
+		nvim --headless "+CocInstall coc-json" +qa
+		nvim --headless +GoInstallBinaries +qa
+	else
+		echo "#####################"
+		echo "######## Skipping ... NeoVim plugins already installed!!! ;)"
+		echo "#####################"
+	fi
+
+	if [ ! -d "$HOME"/.vscode-oss/extensions ]; then
+		echo "#####################"
+		echo "######## Installing VSCode extensions ..."
+		echo "#####################"
+	# Install VSCode extensions
+		code --install-extension ms-vscode.Go
+		code --install-extension lextudio.restructuredtext
+		code --install-extension tomphilbin.gruvbox-themes
+		code --install-extension vector-of-bool.gitflow
+		code --install-extension mads-hartmann.bash-ide-vscode
+	else
+		echo "#####################"
+		echo "######## Skipping ... VSCode extensions already installed!!! ;)"
+		echo "#####################"
+	fi
+
 	echo "#####################"
-	echo "######## Installing NeoVim plugins ..."
+	echo "######## Installing/Updating Go & Bash Language servers ..."
 	echo "#####################"
-# Install Vim Plugins + vim-go binaries
-#curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs "https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
-	nvim --headless +qa
-	nvim --headless +PlugInstall +qa
-	nvim --headless "+CocInstall coc-json" +qa
-	nvim --headless +GoInstallBinaries +qa
-else
-	echo "#####################"
-	echo "######## Skipping ... NeoVim plugins already installed!!! ;)"
-	echo "#####################"
+
+	# Install bash language server
+	export npm_config_prefix=${HOME}/.node_modules
+	npm i -g bash-language-server
+	go get -u github.com/saibing/bingo
 fi
-
-if [ ! -d "$HOME"/.vscode-oss/extensions ]; then
-	echo "#####################"
-	echo "######## Installing VSCode extensions ..."
-	echo "#####################"
-# Install VSCode extensions
-	code --install-extension ms-vscode.Go
-	code --install-extension lextudio.restructuredtext
-	code --install-extension tomphilbin.gruvbox-themes
-	code --install-extension vector-of-bool.gitflow
-	code --install-extension mads-hartmann.bash-ide-vscode
-else
-	echo "#####################"
-	echo "######## Skipping ... VSCode extensions already installed!!! ;)"
-	echo "#####################"
-fi
-
-echo "#####################"
-echo "######## Installing/Updating Go & Bash Language servers ..."
-echo "#####################"
-
-# Install bash language server
-export npm_config_prefix=${HOME}/.node_modules
-npm i -g bash-language-server
-# DEPRECATED go get -v -u github.com/sourcegraph/go-langserver
-# Keep checking for official google go langserver in progress
-go get -v -u github.com/saibing/bingo
-
-# echo "#####################"
-# echo "######## Installing/Updating DRLMv3 Go deps ..."
-# echo "#####################"
-
-#go get -v github.com/spf13/cobra/cobra
-#go get -v github.com/Sirupsen/logrus
-## drlm upstream libs
-#go get -v -u github.com/brainupdaters/drlm-core
-#go get -v -u github.com/brainupdaters/drlmctl
-#go get -v -u github.com/brainupdaters/drlm-common
-#go get -v -u github.com/brainupdaters/drlm-agent
 
 echo "#####################"
 echo "######## Setting up Git/GitFlow & drlm v3 repos ..."
@@ -111,29 +99,29 @@ fi
 
 if [ -f ${HOME}/go/dr3env.ghuser ]; then
 	user=$(cat ${HOME}/go/dr3env.ghuser)
-# 	workdir="${HOME}/go/src/github.com/${user}"
 	workdir="${HOME}/go/src/github.com/brainupdaters"
 	mkdir -vp ${workdir}
-	for repo in drlm-common drlmctl drlm-agent drlm-core drlm-testing
+	for repo in drlm-common drlmctl drlm-agent drlm-core drlm-testing drlm-plugins
 	do
 		if [ ! -d ${workdir}/${repo}/.git ]; then
-			git clone https://github.com/brainupdaters/${repo} ${workdir}/${repo} && \
-				cd ${workdir}/${repo} && \
-				git config url."https://${user}@github.com".InsteadOf "https://github.com" && \
-				git checkout -b master && \
-				git checkout develop && \
-				git remote add fork https://github.com/${user}/${repo} && \
-				git remote rename origin upstream && \
-				git remote rename fork origin && \
-				git fetch upstream && \
-				git flow init -d -p 'feature/' -b 'bugfix/' -r 'release/' -x 'hotfix/' -s 'support/' && \
-				GO111MODULE=on go mod tidy && \
-				cd
+			git clone https://github.com/brainupdaters/${repo} ${workdir}/${repo}
+			cd ${workdir}/${repo}
+			git config url."https://${user}@github.com".InsteadOf "https://github.com"
+			git remote rename origin upstream
+			git remote add origin https://github.com/${user}/${repo}
+			git flow init -d 1> /dev/null
+			git checkout develop
+			if [ "$repo" != "drlm-testing" ] && [ "$repo" != "drlm-plugins" ]; then
+				GO111MODULE=on go mod tidy
+			fi
+			cd
+
 		else
-			cd ${workdir}/${repo} && \
-				git fetch upstream && \
-				GO111MODULE=on go mod tidy && \
-				cd
+			cd ${workdir}/${repo}
+			if [ "$repo" != "drlm-testing" ] && [ "$repo" != "drlm-plugins" ]; then
+				GO111MODULE=on go mod tidy
+			fi
+			cd
 		fi
 	done
 else
